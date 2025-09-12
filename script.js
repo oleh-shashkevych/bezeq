@@ -399,69 +399,18 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const createRecommendationCharts = () => {
-        // Кастомный плагин для отрисовки всех текстовых меток
-        const recommendationLabelsPlugin = {
-            id: 'recommendationLabels',
-            afterDraw: (chart) => {
-                const { ctx, chartArea: { top, bottom, left, right } } = chart;
-                const config = chart.options.plugins.recommendationLabels;
-                if (!config) return;
-    
-                const centerX = (left + right) / 2;
-                const centerY = (top + bottom) / 2;
-    
-                ctx.save();
-                
-                // 1. Отрисовка года в центре
-                ctx.font = '400 30px SimplerPro';
-                ctx.fillStyle = '#010636';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(config.year, centerX, centerY);
-    
-                // Получаем метаданные для позиционирования
-                const pMeta = chart.getDatasetMeta(0);
-                const pArc = pMeta.data[0];
-                const yMeta = chart.getDatasetMeta(1);
-                const yArc = yMeta.data[0];
-                
-                if (!pArc || !yArc) return;
-                
-                // --- Анимация процентов ---
-                // Рассчитываем текущий процент на основе анимированной окружности
-                const pCurrentPercentage = Math.round((pArc.circumference / (2 * Math.PI)) * 100);
-                const yCurrentPercentage = Math.round((yArc.circumference / (2 * Math.PI)) * 100);
-
-                const pLabel = `${pCurrentPercentage}%`;
-                const yLabel = `${yCurrentPercentage}%`;
-                // --- Конец анимации процентов ---
-                
-                // 2. Отрисовка метки для Pelephone (внешнее кольцо)
-                ctx.font = '700 27px SimplerPro';
-                ctx.fillStyle = '#ffffff';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                
-                const pAngle = pArc.startAngle + (Math.PI / 10);
-                const pRadius = pArc.innerRadius + (pArc.outerRadius - pArc.innerRadius) / 2;
-                const pLabelX = centerX + Math.cos(pAngle) * pRadius;
-                const pLabelY = centerY + Math.sin(pAngle) * pRadius;
-                ctx.fillText(pLabel, pLabelX, pLabelY);
-    
-                // 3. Отрисовка метки для Yes (внутреннее кольцо)
-                ctx.font = '700 27px SimplerPro';
-                ctx.fillStyle = '#ffffff';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-
-                const yAngle = yArc.startAngle + (Math.PI / 8);
-                const yRadius = yArc.innerRadius + (yArc.outerRadius - yArc.innerRadius) / 2;
-                const yLabelX = centerX + Math.cos(yAngle) * yRadius;
-                const yLabelY = centerY + Math.sin(yAngle) * yRadius;
-                ctx.fillText(yLabel, yLabelX, yLabelY);
-    
-                ctx.restore();
-            }
+        // Вспомогательная функция для анимации чисел
+        const animateValue = (element, start, end, duration) => {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.innerHTML = Math.floor(progress * (end - start) + start) + '%';
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
         };
     
         const chartDefaults = {
@@ -469,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function () {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '50%', // Уменьшено для более толстых колец
+                cutout: '50%',
                 plugins: {
                     legend: { display: false },
                     tooltip: { enabled: false },
@@ -480,8 +429,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     duration: 1500,
                     easing: 'easeOutQuart'
                 }
-            },
-            plugins: [recommendationLabelsPlugin]
+            }
         };
     
         // График для 2024
@@ -493,21 +441,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     datasets: [{
                         label: 'Pelephone',
                         data: [92, 100 - 92],
-                        backgroundColor: ['#0B429C', '#ffffff'],
+                        backgroundColor: ['#1229c6', '#ffffff'],
                         borderWidth: 0,
                     }, {
                         label: 'Yes',
                         data: [89, 100 - 89],
-                        backgroundColor: ['#16ADFE', '#ffffff'],
+                        backgroundColor: ['#00c0e8', '#ffffff'],
                         borderWidth: 0,
                     }]
-                },
-                options: {
-                    ...chartDefaults.options,
-                    plugins: {
-                        ...chartDefaults.options.plugins,
-                        recommendationLabels: { year: '2024' }
-                    }
                 }
             });
         }
@@ -521,22 +462,24 @@ document.addEventListener('DOMContentLoaded', function () {
                     datasets: [{
                         label: 'Pelephone',
                         data: [89, 100 - 89],
-                        backgroundColor: ['#0B429C', '#ffffff'],
+                        backgroundColor: ['#1229c6', '#ffffff'],
                         borderWidth: 0,
                     }, {
                         label: 'Yes',
                         data: [88, 100 - 88],
-                        backgroundColor: ['#16ADFE', '#ffffff'],
+                        backgroundColor: ['#00c0e8', '#ffffff'],
                         borderWidth: 0,
                     }]
-                },
-                options: {
-                    ...chartDefaults.options,
-                    plugins: {
-                        ...chartDefaults.options.plugins,
-                        recommendationLabels: { year: '2023' }
-                    }
                 }
+            });
+        }
+
+        // Запускаем анимацию чисел после создания графиков
+        const recommendationSection = document.getElementById('recommendation-section');
+        if (recommendationSection) {
+            recommendationSection.querySelectorAll('.percentage-value').forEach(span => {
+                const finalValue = parseInt(span.dataset.value, 10);
+                animateValue(span, 0, finalValue, 1500); // 1500ms - та же длительность, что и у анимации графика
             });
         }
     };
@@ -548,13 +491,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         tabLinks.forEach(link => {
             link.addEventListener('click', () => {
-                const targetId = link.dataset.tab;
+                const targetId = link.dataset.tab; // e.g., "tab-bezeq"
 
                 tabLinks.forEach(item => item.classList.remove('community-impact__tab-link--active'));
                 tabPanels.forEach(panel => panel.classList.remove('community-impact__tab-panel--active'));
                 
                 link.classList.add('community-impact__tab-link--active');
-                document.getElementById(targetId).classList.add('community-impact__tab-panel--active');
+                
+                // Находим нужную панель по ID и делаем ее активной
+                const targetPanel = document.getElementById(targetId);
+                if (targetPanel) {
+                    targetPanel.classList.add('community-impact__tab-panel--active');
+                }
             });
         });
     }
