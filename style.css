@@ -1,4 +1,3 @@
-/* Базовые стили и локальные шрифты */
 @font-face {
     font-family: 'SimplerPro';
     src: url('./fonts/SimplerPro_BEZEQ_HEBREW2-Light.woff') format('woff');
@@ -50,8 +49,7 @@ a {
     text-decoration: none;
 }
 
-/* Стили для всего хиро-блока */
-.hero-section {
+.hero {
     position: relative;
     height: 100vh;
     width: 100%;
@@ -64,8 +62,7 @@ a {
     color: #fff;
 }
 
-/* Контейнер для контента поверх фона и оверлея */
-.hero-content {
+.hero__content {
     position: relative;
     z-index: 2;
     width: 100%;
@@ -79,35 +76,32 @@ a {
     margin: 0 auto;
 }
 
-/* --- ИЗМЕНЕНИЕ: СТИЛИ ШАПКИ --- */
-.main-header {
+.header {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    /* Главное изменение: разносит элементы по краям */
     align-items: center;
 }
 
-.header-right {
+.header__group {
     display: flex;
     align-items: center;
     gap: 30px;
-    /* Расстояние между меню и кнопкой */
 }
 
-.main-header .main-nav ul {
+.nav__list {
     list-style: none;
     display: flex;
     gap: 30px;
 }
 
-.main-header .main-nav ul li a {
+.nav__link {
     font-size: 20px;
     line-height: 1;
     font-weight: 400;
 }
 
-.main-header .cta-button {
+.header__cta {
     border: 1px solid #ffffff;
     padding: 17px 30px;
     border-radius: 99px;
@@ -118,59 +112,52 @@ a {
     font-weight: 400;
 }
 
-.main-header .cta-button:hover {
+.header__cta:hover {
     background-color: #ffffff;
     color: #000000;
 }
 
-.language-switcher {
+.lang-switcher {
     display: none;
 }
 
-/* --- ИЗМЕНЕНИЕ: ЦЕНТРАЛЬНЫЙ КОНТЕНТ --- */
-.center-content {
+.hero__main {
     width: 100%;
-    /* Занимает всю ширину для корректного выравнивания */
     text-align: start;
-    /* Выравнивание по началу (справа в rtl) */
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.center-content__wrapper {
+.hero__main-wrapper {
     padding-inline-start: 8vw;
 }
 
-.center-content .logos {
+.hero__logos {
     max-width: 470px;
     margin-bottom: 0;
 }
 
-.center-content .main-title {
-    font-size:83px;
-    /* Увеличил размер для соответствия макету */
+.hero__title {
+    font-size: 83px;
     font-weight: 900;
-    /* Более жирный шрифт */
     line-height: 1.1;
     margin-bottom: 20px;
 }
 
-.center-content .subtitle {
+.hero__subtitle {
     font-size: 43px;
 }
 
-/* Стрелка (без изменений) */
-.scroll-down {
+.hero__scroll-down {
     animation: bounce 2s infinite;
 }
 
-.scroll-down img {
+.hero__scroll-down img {
     width: 40px;
 }
 
 @keyframes bounce {
-
     0%,
     20%,
     50%,
@@ -178,11 +165,9 @@ a {
     100% {
         transform: translateY(0);
     }
-
     40% {
         transform: translateY(-20px);
     }
-
     60% {
         transform: translateY(-10px);
     }
@@ -194,31 +179,25 @@ a {
     max-width: 100%;
 }
 
-/* Секция с особенностями */
-.features-section {
+.features {
     padding: 50px 0 60px;
     text-align: center;
     background-color: #ffffff;
 }
 
-/* Контейнер */
-.features-section .container {
+.features__container {
     max-width: none;
     padding: 0 40px;
-    /* Отступы по бокам */
 }
 
-/* Заголовок секции */
-.features-section .section-title {
+.features__title {
     font-size: 50px;
     line-height: 70px;
     color: #0058FF;
-    /* Новый цвет */
     margin-bottom: 30px;
 }
 
-/* Сетка для элементов */
-.features-grid {
+.features__grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -227,7 +206,7 @@ a {
     margin: 0 auto;
 }
 
-.feature-item {
+.features__item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -235,11 +214,10 @@ a {
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
     flex: 0 1 calc(25% - 30px);
-    /* 4 колонки на десктопе */
     min-width: 200px;
 }
 
-.feature-item p {
+.features__text {
     font-size: 24px;
     line-height: 27px;
     color: #010635;
@@ -249,51 +227,40 @@ a {
     transition: all 0.3s ease;
 }
 
-/* Эффекты при наведении */
-.feature-item:hover p {
+.features__item:hover .features__text {
     font-weight: bold;
 }
 
-/* Адаптивность */
 @media (max-width: 992px) {
-    .feature-item {
+    .features__item {
         flex-basis: calc(33.33% - 30px);
-        /* 3 колонки */
     }
 }
-
 @media (max-width: 768px) {
-    .features-section .container {
+    .features__container {
         padding: 0 20px;
     }
-
-    .feature-item {
+    .features__item {
         flex-basis: calc(50% - 30px);
-        /* 2 колонки */
     }
 }
-
 @media (max-width: 480px) {
-    .feature-item {
+    .features__item {
         flex-basis: 100%;
-        /* 1 колонка */
     }
 }
 
-.testimonial-section {
+.testimonial {
     display: grid;
-    /* Создаем 2 колонки: 45% для фото, 55% для текста */
     grid-template-columns: 1fr 300px;
     gap: 25px;
     width: 100%;
     background-color: #0069FF;
     color: #fff;
     min-height: 650px;
-    /* Фоновый цвет на случай, если фото не загрузится */
 }
 
-/* Стили для блока с текстом */
-.testimonial-content {
+.testimonial__content {
     padding: 50px 60px 50px 0;
     max-width: 992px;
     display: flex;
@@ -303,7 +270,7 @@ a {
     margin: 0 auto;
 }
 
-.testimonial-content h2 {
+.testimonial__title {
     font-size: 50px;
     font-weight: 900;
     margin-bottom: 20px;
@@ -311,76 +278,58 @@ a {
     max-width: 400px;
 }
 
-.testimonial-content p {
+.testimonial__text {
     font-size: 20px;
     line-height: 26px;
     margin-bottom: 12px;
 }
 
-.testimonial-content p:last-child {
-    margin-bottom: 0;
+.testimonial__author {
+    margin-top: 18px;
+    font-size: 20px;
+    line-height: 26px;
 }
 
-.testimonial-content .signature {
-    margin-top: 30px;
-    font-size: 1.1rem;
-}
-
-/* Стили для блока с фото */
-.testimonial-image {
-    /* Новый URL для примера */
+.testimonial__image {
     background-image: url('/img/photo.webp');
     background-size: cover;
     background-position: center;
     min-height: 400px;
 }
 
-/* --- Адаптивность --- */
 @media (max-width: 992px) {
-
-    /* Меняем пропорции колонок для средних экранов */
-    .testimonial-section {
+    .testimonial {
         grid-template-columns: 60% 40%;
     }
-
-    .testimonial-content {
+    .testimonial__content {
         padding: 60px 40px;
     }
-
-    .testimonial-content h2 {
+    .testimonial__title {
         font-size: 2rem;
     }
 }
-
 @media (max-width: 768px) {
-
-    /* На мобильных переключаемся на одну колонку: текст сверху, фото снизу */
-    .testimonial-section {
+    .testimonial {
         grid-template-columns: 1fr;
     }
 }
 
-/* Секция с целями ESG */
-.esg-goals-section {
+.esg-goals {
     position: relative;
     padding: 75px 0 50px;
-    /* --- ЗАМЕНИТЕ URL НА ПУТЬ К ВАШЕЙ ФОНОВОЙ КАРТИНКЕ --- */
     background-image: url('/img/bg-1.webp');
-    /* Временный плейсхолдер */
     background-size: cover;
     background-position: center;
     text-align: center;
     color: #ffffff;
 }
 
-/* Весь контент должен быть поверх оверлея */
-.esg-goals-section .container {
+.esg-goals__container {
     position: relative;
     z-index: 2;
 }
 
-/* Заголовок секции */
-.esg-title {
+.esg-goals__title {
     font-size: 50px;
     line-height: 52px;
     font-weight: 900;
@@ -388,94 +337,77 @@ a {
     text-shadow: 0px 1px 4px #00000040;
 }
 
-/* Сетка для блоков с целями */
-.goals-grid {
+.esg-goals__grid {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
     gap: 40px;
-    /* Расстояние между блоками */
 }
 
-/* Отдельный блок с целью */
-.goal-item {
+.goal-card {
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
     flex-basis: 200px;
-    /* Базовая ширина каждого элемента */
     transition: transform 0.2s ease-in-out;
 }
 
-.goal-item:hover {
+.goal-card:hover {
     transform: translateY(-5px);
 }
 
-.goal-item svg {
+.goal-card__icon {
     width: 80px;
     height: 80px;
     object-fit: contain;
 }
 
-.goal-text {
+.goal-card__text {
     font-size: 24px;
     line-height: 27px;
     font-weight: 400;
     margin-top: 10px;
 }
 
-
-/* --- Адаптивность --- */
 @media (max-width: 992px) {
-    .esg-title {
+    .esg-goals__title {
         font-size: 2.4rem;
     }
-
-    .goals-grid {
+    .esg-goals__grid {
         gap: 30px;
     }
 }
-
 @media (max-width: 768px) {
-
-    /* На планшетах делаем 2 колонки */
-    .goal-item {
+    .goal-card {
         flex-basis: calc(50% - 20px);
-        /* 2 элемента в ряду с учетом gap */
     }
 }
-
 @media (max-width: 480px) {
-    .esg-title {
+    .esg-goals__title {
         font-size: 2rem;
     }
-
-    /* На мобильных оставляем 2 колонки, но увеличиваем отступы */
-    .goals-grid {
+    .esg-goals__grid {
         gap: 50px 20px;
-        /* Больший отступ по вертикали */
     }
 }
 
-/* Секция со статистикой компаний */
-.company-stats-section {
+.company-stats {
     position: relative;
-    /* Важно для позиционирования дочерних элементов */
     background-color: #ffffff;
     padding: 160px 0 60px;
     overflow: hidden;
-    /* Скрываем части декора, которые выходят за пределы */
 }
 
-.company-stats-section .container {
+.company-stats__container {
     max-width: 1440px;
     margin: 0 auto;
+    position: relative;
+    z-index: 2;
 }
 
-/* Декоративный элемент (синяя "волна") */
-.decorative-swoosh {
+.company-stats__swoosh {
     position: absolute;
     top: 50px;
     left: -5vw;
@@ -489,14 +421,7 @@ a {
     z-index: 1;
 }
 
-/* Контейнер должен быть поверх декоративного элемента */
-.company-stats-section .container {
-    position: relative;
-    z-index: 2;
-}
-
-/* Заголовок секции, выравниваем по правому краю */
-.company-stats-section .section-title {
+.company-stats__title {
     text-align: right;
     color: #0058FF;
     font-size: 50px;
@@ -505,15 +430,12 @@ a {
     margin-bottom: 60px;
 }
 
-/* Сетка для карточек */
-.stats-grid {
+.company-stats__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* 2 колонки */
     gap: 25px;
 }
 
-/* Стили для отдельной карточки */
 .stat-card {
     background-color: #F4F4F4;
     padding: 18px 18px 22px 26px;
@@ -523,37 +445,33 @@ a {
     gap: 10px;
 }
 
-.stat-card img {
+.stat-card__logo {
     height: 39px;
     align-self: flex-start;
     object-fit: contain;
     object-position: right top;
 }
 
-.stat-card:nth-child(1) img {
+.company-stats__card:nth-child(1) .stat-card__logo {
     width: 60px;
 }
-
-.stat-card:nth-child(2) img {
+.company-stats__card:nth-child(2) .stat-card__logo {
     width: 67px;
 }
-
-.stat-card:nth-child(3) img {
+.company-stats__card:nth-child(3) .stat-card__logo {
     width: 144px;
 }
-
-.stat-card:nth-child(4) img {
+.company-stats__card:nth-child(4) .stat-card__logo {
     width: 97px;
 }
 
-.stat-card p {
+.stat-card__text {
     color: #000;
     line-height: 26px;
     font-size: 20px;
 }
 
-/* Сноска под гридом */
-.footnote {
+.company-stats__footnote {
     text-align: center;
     margin-top: 20px;
     font-size: 12px;
@@ -561,47 +479,31 @@ a {
     color: #000;
 }
 
-/* --- Адаптивность --- */
 @media (max-width: 768px) {
-
-    /* На мобильных переключаемся на одну колонку */
-    .stats-grid {
+    .company-stats__grid {
         grid-template-columns: 1fr;
     }
-
-    .company-stats-section .section-title {
+    .company-stats__title {
         text-align: center;
     }
-
-    /* На мобильных можно скрыть или уменьшить декоративный элемент */
-    .decorative-swoosh {
+    .company-stats__swoosh {
         opacity: 0.3;
         transform: scale(0.8) translate(-100px, -100px);
     }
 }
 
-/* Секция-баннер с градиентом */
-.gradient-banner-section {
+.banner {
     position: relative;
     color: #ffffff;
-
-    /* --- ИЗМЕНЕНИЕ: Добавляем Flexbox для выравнивания --- */
     display: flex;
     align-items: flex-end;
-    /* Прижимаем контент к низу */
-
-    /* Адаптируем отступы для нового выравнивания */
     padding: 96px 40px 56px 40px;
-    /* Задаем минимальную высоту секции */
-
-    /* --- ИЗМЕНЕНИЕ: Новое фоновое изображение для примера --- */
     background-size: cover;
     background-position: center;
     min-height: 460px;
 }
 
-/* Градиентный оверлей (без изменений) */
-.gradient-banner-section::before {
+.banner::before {
     content: '';
     position: absolute;
     top: 0;
@@ -612,18 +514,14 @@ a {
     z-index: 1;
 }
 
-/* Контейнер контента (без изменений) */
-.gradient-banner-section .container {
+.banner__container {
     position: relative;
     z-index: 2;
     width: 1440px;
     margin: 0 auto;
-    /* Заставляем контейнер занять всю ширину flex-пространства */
 }
 
-/* Блок с текстом */
-.banner-content {
-    /* --- ИЗМЕНЕНИЕ: Выравниваем текст по правому краю --- */
+.banner__content {
     text-align: start;
     display: flex;
     flex-direction: column;
@@ -631,59 +529,52 @@ a {
     max-width: 562px;
 }
 
-.banner-content h2 {
+.banner__title {
     font-size: 50px;
     line-height: 52px;
     font-weight: 900;
     margin-bottom: 10px;
 }
 
-.banner-content p {
+.banner__text {
     font-size: 24px;
     line-height: 30px;
     font-weight: 400;
 }
 
-/* Адаптивность (без изменений) */
 @media (max-width: 768px) {
-    .banner-content h2 {
+    .banner__title {
         font-size: 2.2rem;
     }
-
-    .banner-content p {
+    .banner__text {
         font-size: 1rem;
     }
 }
 
-/* Секция со слайдером */
-.community-slider-section {
+.community-slider {
     padding: 0;
-    /* Убраны отступы сверху и снизу */
     background-color: #f7f8fa;
 }
 
-/* Контейнер слайдера теперь без тени и скруглений по углам, так как он занимает всю ширину */
-.community-swiper {
+.community-slider__swiper {
     width: 100%;
     height: 500px;
 }
 
-.swiper-slide {
+.community-slider__slide {
     display: grid;
     grid-template-columns: 1fr 1fr;
     background-color: #ffffff;
 }
 
-/* Колонка с изображением */
-.slide-image {
+.community-slider__image {
     width: 100%;
     height: 100%;
     background-size: cover;
     background-position: center;
 }
 
-/* Колонка с контентом */
-.slide-content {
+.community-slider__content {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -692,124 +583,102 @@ a {
     margin: 0 auto;
 }
 
-.slide-content .line {
+.community-slider__line {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 12px;
 }
 
-.slide-content .slide-logo {
+.community-slider__logo {
     width: 54px;
     height: auto;
 }
 
-.slide-content .slide-logo.large {
+.community-slider__logo--large {
     width: 79px;
 }
 
-.slide-content .slide-logo.small {
+.community-slider__logo--small {
     max-height: 60px;
 }
 
-.slide-content p {
+.community-slider__text {
     font-size: 24px;
     line-height: 30px;
     color: #000;
     font-weight: 400;
 }
 
-/* Особый блок для цитаты на 5-м слайде */
-.quote-box img {
+.community-slider__quote-box img {
     margin-top: 15px;
     width: 378px;
 }
 
-/* Стили для стрелок и точек удалены */
-
-/* --- Адаптивность --- */
 @media (max-width: 768px) {
-    .community-swiper {
+    .community-slider__swiper {
         height: auto;
     }
-
-    .swiper-slide {
+    .community-slider__slide {
         grid-template-columns: 1fr;
     }
-
-    .slide-image {
+    .community-slider__image {
         height: 250px;
     }
 }
 
-/* Секция с желтой лентой */
-.solidarity-banner {
+.solidarity {
     position: relative;
-    /* Необходимо для позиционирования оверлея */
     padding: 34px 0;
-
-    /* Фоновое изображение для примера */
     background-image: url('/img/flowers.webp');
     background-size: cover;
     background-position: center;
-
-    /* Центрируем контент */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Градиентный оверлей */
-.solidarity-banner::after {
+.solidarity::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-
-    /* Градиент от полупрозрачного синего к более плотному синему */
     background: #0069FF;
     opacity: .7;
     z-index: 1;
 }
 
-/* Градиентный оверлей */
-.solidarity-banner::before {
+.solidarity::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-
-    /* Градиент от полупрозрачного синего к более плотному синему */
     background: linear-gradient(180deg, rgba(0, 63, 153, 0) 0%, #0069FF 65%);
     z-index: 2;
 }
 
-/* Контент должен быть поверх оверлея */
-.solidarity-banner .container {
+.solidarity__container {
     position: relative;
     z-index: 3;
 }
 
-/* Блок с контентом (иконка + текст) */
-.banner-content-centered {
+.solidarity__content {
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.banner-content-centered svg {
+.solidarity__icon {
     height: 102px;
-    /* Размер иконки */
     margin-bottom: 15px;
-    /* Отступ между иконкой и текстом */
 }
 
-.banner-content-centered p {
+.solidarity__text {
     color: #ffffff;
     font-size: 46px;
     line-height: 52px;
@@ -818,29 +687,25 @@ a {
     text-align: center;
 }
 
-.banner-content-centered p strong {
+.solidarity__text strong {
     font-weight: 900;
 }
 
-
-/* --- Адаптивность --- */
 @media (max-width: 768px) {
-    .banner-content-centered p {
+    .solidarity__text {
         font-size: 1.8rem;
     }
-
-    .banner-content-centered img {
+    .solidarity__icon {
         height: 70px;
     }
 }
 
-/* Секция с логотипами партнёров */
-.partners-section {
+.partners {
     padding: 50px 0;
     background-color: #ffffff;
 }
 
-.partners-section .section-title {
+.partners__title {
     color: #0069FF;
     text-align: center;
     font-size: 50px;
@@ -848,22 +713,17 @@ a {
     margin-bottom: 60px;
 }
 
-/* Контейнер для всех партнёров */
-.partners-grid {
+.partners__grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     justify-content: center;
-    /* Центрируем по горизонтали */
     flex-wrap: wrap;
-    /* Разрешаем перенос на новую строку */
     gap: 35px;
-    /* Отступ по вертикали при переносе, без горизонтального */
     max-width: 1440px;
     margin: 0 auto;
 }
 
-/* Отдельный блок партнёра */
-.partner-item {
+.partners__item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -871,9 +731,7 @@ a {
     position: relative;
 }
 
-
-/* Круглый блок для логотипа */
-.partner-logo {
+.partners__logo-wrapper {
     width: 178px;
     height: 178px;
     display: flex;
@@ -883,77 +741,66 @@ a {
     padding: 0;
 }
 
-.partner-logo img {
+.partners__logo {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-/* Текст под логотипом */
-.partner-text p {
+.partners__text {
     color: #010636;
     line-height: 30px;
     font-size: 24px;
 }
 
-/* --- Адаптивность --- */
 @media (max-width: 992px) {
-    .partner-item {
+    .partners__item {
         flex-basis: 30%;
-        /* Перестраиваем в 3 колонки */
     }
-
-    /* Убираем лишние разделители */
-    .partner-item:nth-child(3n + 1)::before {
+    .partners__item:nth-child(3n + 1)::before {
         display: none;
     }
 }
-
 @media (max-width: 768px) {
-
-    /* Перестраиваем в одну колонку */
-    .partners-grid {
+    .partners__grid {
         flex-direction: column;
         align-items: center;
         gap: 50px;
     }
-
-    /* Прячем все разделительные линии */
-    .partner-item:not(:first-child)::before {
+    .partners__item:not(:first-child)::before {
         display: none;
     }
 }
 
-/* --- Стили для секции с кастомным графиком --- */
-.data-charts-section {
+.charts {
     padding: 40px 0;
     background-color: #ffffff;
 }
 
-.data-charts-section .container {
+.charts__container {
     max-width: 1440px;
     margin: 0 auto;
 }
 
-.custom-chart-wrapper {
+.charts__wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Две равные колонки */
+    grid-template-columns: 1fr 1fr;
     gap: 40px;
     border-bottom: 1px solid #010636;
     padding: 0 40px;
 }
 
-.chart-content-col {
-    text-align: right; /* Выравниваем текст по правому краю */
+.charts__content {
+    text-align: right;
 }
 
-.chart-icon-new {
+.charts__icon {
     width: 60px;
     height: auto;
     margin-bottom: 20px;
 }
 
-.chart-title-new {
+.charts__title {
     font-size: 32px;
     line-height: 35px;
     font-weight: 900;
@@ -962,81 +809,75 @@ a {
     max-width: 235px;
 }
 
-.chart-subtitle-new {
-    font-size: 24px; /* ~20px */
+.charts__subtitle {
+    font-size: 24px;
     color: #010636;
     line-height: 30px;
     max-width: 400px;
 }
 
-.chart-canvas-col {
+.charts__canvas-wrapper {
     width: 100%;
-    height: 300px; /* Задаем фиксированную высоту для контейнера канваса */
+    height: 300px;
 }
 
-/* --- Адаптивность --- */
 @media (max-width: 992px) {
-    .custom-chart-wrapper {
-        grid-template-columns: 1fr; /* Одна колонка на планшетах */
-        direction: ltr; /* Возвращаем стандартное направление для стека */
+    .charts__wrapper {
+        grid-template-columns: 1fr;
+        direction: ltr;
     }
-    .chart-content-col {
-       text-align: center; /* Центрируем текст, когда он сверху */
+    .charts__content {
+       text-align: center;
        margin-bottom: 40px;
     }
-    .chart-title-new {
+    .charts__title {
         font-size: 2.2rem;
     }
 }
-
 @media (max-width: 768px) {
-    .data-charts-section {
+    .charts {
         padding: 60px 20px;
     }
 }
 
-/* --------------------------------------------------------------
-   NEW SECTION: electric‑water-section
-   -------------------------------------------------------------- */
-.electric-water-section {
+.stats-combo {
     padding: 0 0 60px;
 }
-.electric-water-section .container {
+.stats-combo__container {
     max-width: 1440px;
     margin: 0 auto;
 }
 
-.electric-water-section__wrapper {
+.stats-combo__wrapper {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Две равные колонки */
+    grid-template-columns: 1fr 1fr;
     gap: 40px;
 }
 
-.electric-water-left {
+.stats-combo__column--vehicles {
     padding-inline: 40px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.electric-water-right {
+.stats-combo__column--water {
     border-bottom: 1px solid #010636;
     padding-inline-end: 40px;
 }
 
-.electric-arrow {
+.stats-combo__arrow {
     margin-top: 45px;
     width: 100%;
     height: 45px;
     margin-bottom: -20px;
 }
 
-.electric-arrow img {
+.stats-combo__arrow img {
     width: 100%;
 }
 
-.electric-water-left h2,
-.electric-water-right h2 {
+.stats-combo__title {
     font-size: 32px;
     line-height: 35px;
     font-weight: 900;
@@ -1044,14 +885,13 @@ a {
     margin-bottom: 0;
     max-width: 350px;
 }
-.electric-water-left p,
-.electric-water-right p {
-    font-size: 24px; /* ~20px */
+.stats-combo__text {
+    font-size: 24px;
     color: #010636;
     line-height: 30px;
     max-width: 320px;
 }
-.responsive-img {
+.stats-combo__image {
     max-width: 100%;
     height: auto;
     width: 240px;
@@ -1059,31 +899,21 @@ a {
     display: block;
 }
 
-/* Chart wrapper – keeps the canvas at a fixed aspect ratio */
-.electric-water-right .chart-wrapper {
+.stats-combo__chart-wrapper {
     position: relative;
     width: 100%;
-    height: 180px;                     /* same height as other bar charts */
+    height: 180px;
 }
 
-/* Responsive tweaks */
 @media (max-width: 768px) {
-    .electric-water-section {
+    .stats-combo {
         padding: 40px 0;
     }
 }
 
-/* Стрелка тренда для графика с водой */
-.water-chart-container {
+.promo-video {
     position: relative;
-}
-
-/* Секция с фоновым видео */
-.video-bg-section {
-    position: relative;
-    /* Важно для позиционирования дочерних элементов */
     height: 70vh;
-    /* Задаем высоту секции */
     min-height: 350px;
     display: flex;
     justify-content: center;
@@ -1091,11 +921,9 @@ a {
     color: #ffffff;
     text-align: center;
     overflow: hidden;
-    /* Скрываем все, что выходит за пределы */
 }
 
-/* Стили для самого видео */
-.background-video {
+.promo-video__background {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1105,22 +933,17 @@ a {
     width: auto;
     height: auto;
     z-index: 1;
-    /* Самый нижний слой */
     object-fit: cover;
-    /* Главное свойство для адаптивности */
 }
 
-/* Контейнер для контента и оверлея */
-.video-content-overlay {
+.promo-video__overlay {
     position: relative;
     z-index: 3;
-    /* Поверх оверлея */
     width: 100%;
     padding: 20px;
 }
 
-/* Синий полупрозрачный оверлей между видео и текстом */
-.video-bg-section::before {
+.promo-video::before {
     content: '';
     position: absolute;
     top: 0;
@@ -1128,12 +951,10 @@ a {
     width: 100%;
     height: 100%;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 105, 255, 0.8) 79.81%);
-    /* Синий с 60% прозрачности */
     z-index: 2;
-    /* Между видео и текстом */
 }
 
-.video-content-overlay h2 {
+.promo-video__title {
     font-size: 50px;
     line-height: 52px;
     font-weight: 900;
@@ -1141,72 +962,66 @@ a {
     margin-bottom: 10px;
 }
 
-.video-content-overlay p {
+.promo-video__text {
     font-size: 24px;
     line-height: 30px;
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
-    /* Центрируем параграф, если он уже чем контейнер */
 }
 
-/* --- Адаптивность --- */
 @media (max-width: 768px) {
-    .video-content-overlay h1 {
+    .promo-video__title {
         font-size: 2.5rem;
     }
-
-    .video-content-overlay p {
+    .promo-video__text {
         font-size: 1rem;
     }
 }
 
-/* Секция с круговыми диаграммами */
-.progress-charts-section {
+.progress {
     padding: 60px 0;
     background-color: #ffffff;
 }
 
-.progress-charts-section .section-header {
+.progress__header {
     text-align: center;
     margin-bottom: 50px;
 }
 
-.progress-charts-section .section-title {
+.progress__title {
     color: #0069FF;
     font-size: 50px;
     line-height: 52px;
 }
 
-.progress-charts-section .section-subtitle {
+.progress__subtitle {
     color: #000;
     font-size: 24px;
     line-height: 52px;
 }
 
-/* Сетка для диаграмм */
-.progress-grid {
+.progress__grid {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 80px;
 }
 
-.progress-card {
+.progress__card {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 30px;
 }
 
-/* Контейнер для круга и процента */
-.progress-circle {
+.progress__circle {
     position: relative;
     width: 160px;
     height: 160px;
 }
 
-.progress-percent {
+.progress__percent {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1216,60 +1031,52 @@ a {
     color: #0058FF;
 }
 
-.progress-ring {
+.progress__ring {
     transform: rotate(-90deg);
-    /* Начинаем анимацию сверху */
 }
 
-.progress-ring-bg,
-.progress-ring-fg {
+.progress__ring-bg,
+.progress__ring-fg {
     fill: none;
     stroke-width: 12;
 }
 
-.progress-ring-bg {
+.progress__ring-bg {
     stroke: #e6e6e6;
-    /* Цвет фона круга */
 }
 
-.progress-ring-fg {
+.progress__ring-fg {
     stroke: #007bff;
-    /* Цвет индикатора */
     stroke-dasharray: 440;
     stroke-dashoffset: 440;
-    /* Изначально "пустой" */
     transition: stroke-dashoffset 1.5s ease-out;
 }
 
-.progress-logo {
+.progress__logo {
     height: 45px;
     max-width: 100%;
     object-fit: contain;
 }
 
-.progress-card:nth-child(1) .progress-logo {
+.progress__card:nth-child(1) .progress__logo {
     width: 70px;
 }
-
-.progress-card:nth-child(2) .progress-logo {
+.progress__card:nth-child(2) .progress__logo {
     width: 77px;
 }
-
-.progress-card:nth-child(3) .progress-logo {
+.progress__card:nth-child(3) .progress__logo {
     width: 160px;
 }
-
-.progress-card:nth-child(4) .progress-logo {
+.progress__card:nth-child(4) .progress__logo {
     width: 110px;
 }
 
-/* Текст-итог внизу */
-.summary-text {
+.progress__summary {
     text-align: center;
     margin-top: 90px;
 }
 
-.summary-text h3 {
+.progress__summary-title {
     font-size: 35px;
     line-height: 52px;
     font-weight: 700;
@@ -1277,7 +1084,7 @@ a {
     margin-bottom: 14px;
 }
 
-.summary-text p {
+.progress__summary-text {
     display: inline-block;
     font-size: 25px;
     line-height: 28px;
@@ -1286,76 +1093,65 @@ a {
     padding-inline: 20px;
 }
 
-/* --------------------------------------------------------------
-   Diversity Chart Section
-   -------------------------------------------------------------- */
-
-/* Корневой блок – задаём позиционирование, чтобы фон был под контентом */
-.diversity-chart-section {
+.diversity {
     position: relative;
     overflow: hidden;
-    padding: 80px 0 0;                     /* вертикальные отступы */
-    color: #fff;                         /* базовый цвет текста */
+    padding: 80px 0 0;
+    color: #fff;
 }
 
-/* Фоновая картинка + полупрозрачный оверлей */
-.diversity-chart-section .section-bg {
+.diversity__background {
     position: absolute;
-    inset: 0;                            /* top/right/bottom/left = 0 */
+    inset: 0;
     background: url('/img/diversity-bg.webp') center/cover no-repeat;
     z-index: 1;
 }
 
-/* Оверлей – #0069FF с 80 % прозрачности (opacity 0.8) */
-.diversity-chart-section .section-bg::after {
+.diversity__background::after {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(0, 105, 255, 0.8);
 }
 
-.diversity-chart-section .container {
-    position: relative;                  /* поверх фона и оверлея */
+.diversity__container {
+    position: relative;
     z-index: 2;
     max-width: 1440px;
     margin: 0 auto;
-    padding: 0 40px;                     /* отступы по бокам */
+    padding: 0 40px;
 }
 
-/* Wrapper, в котором располагаются две колонки */
-.diversity-chart-section .chart-wrapper {
+.diversity__wrapper {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
 }
 
-/* Иконка */
-.diversity-chart-section .chart-icon {
+.diversity__icon {
     width: 80px;
     height: auto;
     margin-bottom: 10px;
 }
 
-/* Заголовок */
-.diversity-chart-section .chart-title {
+.diversity__title {
     font-size: 50px;
     line-height: 52px;
     margin-bottom: 23px;
     font-weight: 700;
 }
 
-/* Текст */
-.diversity-chart-section .diversity-chart-text {
+.diversity__text {
     font-size: 24px;
     line-height: 30px;
     margin-bottom: 20px;
 }
 
-.diversity-chart-text-bg {
+.diversity__highlight {
     margin-bottom: 40px;
 }
 
-.diversity-chart-text-bg p {
+.diversity__highlight p {
     font-size: 24px;
     line-height: 30px;
     display: inline-block;
@@ -1363,134 +1159,106 @@ a {
     margin-bottom: 4px;
 }
 
-.diversity-chart-small {
+.diversity__footnote {
     max-width: 420px;
     font-size: 12px;
     line-height: 13px;
     margin-bottom: 15px;
 }
 
-.chart-graph {
+.diversity__graph {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
 }
 
-.chart-graph__wrapper {
+.diversity__chart-wrapper {
     height: 300px;
     width: 100%;
 }
 
-/* Canvas получает фиксированную высоту, чтобы столбцы выглядели пропорционально */
-.chart-graph canvas {
+.diversity__graph canvas {
     width: 100%;
 }
 
-.diversity-arrow {
+.diversity__arrow {
     width: 80%;
     height: 80px;
     margin: 0 auto;
 }
 
-.diversity-arrow img {
+.diversity__arrow img {
     width: 100%;
 }
 
-/* -----------------------------------------------------------------
-   Адаптивность (мобильные устройства)
-   ----------------------------------------------------------------- */
 @media (max-width: 768px) {
-    .diversity-chart-section .chart-wrapper {
+    .diversity__wrapper {
         flex-direction: column;
         align-items: stretch;
     }
-    .diversity-chart-section .chart-info,
-    .diversity-chart-section .chart-graph {
+    .diversity__info,
+    .diversity__graph {
         flex-basis: auto;
     }
 }
 
-/* --- Секция 2: Safety --- */
-.safety-section {
+.safety {
     padding: 80px 0;
     background-color: #ffffff;
 }
 
-.safety-grid {
+.safety__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
 }
 
-.safety-text-area {
+.safety__text-area {
     padding-right: 20px;
 }
 
-.safety-text-area h2 {
+.safety__title {
     font-size: 2.5rem;
     color: #0058FF;
     margin-bottom: 15px;
 }
 
-.safety-text-area p {
+.safety__subtitle {
     font-size: 1.2rem;
     color: #333;
 }
 
-.safety-chart-area {
+.safety__chart-area {
     min-height: 200px;
-    /* Высота для горизонтального графика */
 }
 
-
-/* --- Адаптивность для обеих секций --- */
 @media (max-width: 768px) {
-
-    .diversity-grid,
-    .safety-grid {
+    .safety__grid {
         grid-template-columns: 1fr;
-        /* Одна колонка */
     }
-
-    .diversity-chart-area {
-        min-height: 300px;
-        order: 2;
-        /* Меняем порядок на мобильных */
-    }
-
-    .diversity-text-area {
-        order: 1;
-    }
-
-    .safety-grid {
+    .safety__grid {
         gap: 20px;
     }
-
-    .safety-text-area {
+    .safety__text-area {
         text-align: center;
     }
-
-    .safety-text-area .section-icon {
+    .safety__icon {
         align-self: center;
     }
 }
 
-/* Секция с кибербезопасностью */
-.cybersecurity-section {
+.cybersecurity {
     display: grid;
     grid-template-columns: 1fr 1fr;
     height: 85vh;
-    /* Основная высота */
     max-height: 100vh;
-    /* Максимальная высота */
     min-height: 600px;
     background-color: #ffffff;
 }
 
-/* --- Правая колонка с видео --- */
-.cyber-video-column {
+.cybersecurity__column--video {
     position: relative;
     display: flex;
     justify-content: center;
@@ -1500,61 +1268,47 @@ a {
     overflow: hidden;
 }
 
-/* Стили для .background-video, .video-content-overlay и ::before остаются такими же, как в предыдущих видео-секциях */
-.cyber-video-column .section-icon {
+.cybersecurity__icon {
     height: 60px;
     align-self: center;
-    /* иконка по центру в этом блоке */
     margin-bottom: 25px;
 }
 
-.cyber-video-column h1 {
+.cybersecurity__title {
     font-size: 3rem;
     font-weight: 700;
 }
 
-
-/* --- Левая колонка со скроллом --- */
-.cyber-scrolling-column {
+.cybersecurity__column--scroll {
     padding: 40px;
-    /* УБИРАЕМ display: flex; */
-    /* ДОБАВЛЯЕМ overflow-y: auto; */
     overflow-y: auto;
-    /* Включаем скролл для самой колонки */
     padding-left: 20px;
-    /* Отступ слева (в RTL), чтобы скролл не наезжал на контент */
 }
 
-.scrolling-content-inner {
+.cybersecurity__scroll-inner {
     height: auto;
-    /* Высота автоматическая */
     overflow-y: visible;
-    /* Скролл отключен */
 }
 
-/* Стилизация скроллбара (теперь применяется к колонке) */
-.cyber-scrolling-column::-webkit-scrollbar {
+.cybersecurity__column--scroll::-webkit-scrollbar {
     width: 8px;
 }
-
-.cyber-scrolling-column::-webkit-scrollbar-track {
+.cybersecurity__column--scroll::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
-
-.cyber-scrolling-column::-webkit-scrollbar-thumb {
+.cybersecurity__column--scroll::-webkit-scrollbar-thumb {
     background: #0058FF;
     border-radius: 4px;
 }
-
-.cyber-scrolling-column::-webkit-scrollbar-thumb:hover {
+.cybersecurity__column--scroll::-webkit-scrollbar-thumb:hover {
     background: #003a6c;
 }
 
-.content-block {
+.cybersecurity__content-block {
     margin-bottom: 40px;
 }
 
-.content-header {
+.cybersecurity__block-header {
     display: flex;
     align-items: center;
     gap: 15px;
@@ -1563,21 +1317,21 @@ a {
     padding-bottom: 15px;
 }
 
-.content-header img {
+.cybersecurity__block-header img {
     height: 30px;
 }
 
-.content-header h3 {
+.cybersecurity__block-title {
     font-size: 1.5rem;
     color: #0058FF;
 }
 
-.scrolling-content-inner ul {
+.cybersecurity__list {
     list-style: none;
     padding-right: 10px;
 }
 
-.scrolling-content-inner li {
+.cybersecurity__list-item {
     display: flex;
     gap: 15px;
     font-size: 1rem;
@@ -1586,111 +1340,78 @@ a {
     margin-bottom: 15px;
 }
 
-.checkmark {
+.cybersecurity__checkmark {
     color: #007bff;
     font-weight: bold;
 }
 
-/* Стилизация скроллбара (опционально) */
-.scrolling-content-inner::-webkit-scrollbar {
-    width: 8px;
-}
-
-.scrolling-content-inner::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.scrolling-content-inner::-webkit-scrollbar-thumb {
-    background: #0058FF;
-    border-radius: 4px;
-}
-
-.scrolling-content-inner::-webkit-scrollbar-thumb:hover {
-    background: #003a6c;
-}
-
-
-/* --- Адаптивность --- */
 @media (max-width: 992px) {
-    .cybersecurity-section {
+    .cybersecurity {
         grid-template-columns: 1fr;
-        /* Одна колонка */
         height: auto;
-        /* Высота автоматическая */
     }
-
-    .cyber-video-column {
+    .cybersecurity__column--video {
         min-height: 400px;
         order: 1;
-        /* Видео сверху */
     }
-
-    .cyber-scrolling-column {
+    .cybersecurity__column--scroll {
         order: 2;
-        /* Контент снизу */
     }
-
-    .scrolling-content-inner {
+    .cybersecurity__scroll-inner {
         overflow-y: visible;
-        /* Отключаем скролл на мобильных */
         height: auto;
     }
 }
 
-/* Секция с оценками сервиса */
-.service-scores-section {
+.scores {
     padding: 80px 0;
     background-color: #ffffff;
 }
 
-.service-scores-section .section-header {
+.scores__header {
     text-align: center;
     margin-bottom: 50px;
 }
 
-.service-scores-section .section-title {
+.scores__title {
     color: #0058FF;
     font-size: 2.5rem;
     margin-bottom: 10px;
 }
 
-.service-scores-section .section-subtitle {
+.scores__subtitle {
     color: #333;
     font-size: 1.2rem;
 }
 
-/* Сетка для карточек */
-.scores-grid {
+.scores__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 25px;
 }
 
-.score-card {
+.scores__card {
     background-color: #f7f8fa;
     border-radius: 16px;
     padding: 30px;
     text-align: center;
 }
 
-.score-card h3 {
+.scores__card-title {
     font-size: 1.5rem;
     color: #333;
     margin-bottom: 30px;
 }
 
-.badges-container {
+.scores__badges-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
-/* Стили для значка с оценкой */
-.score-badge {
+.scores__badge {
     width: 120px;
     height: 120px;
-    background-image: url('https://i.imgur.com/83j4sAW.png');
-    /* Фоновая форма значка */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -1699,109 +1420,93 @@ a {
     justify-content: center;
     align-items: center;
     color: #ffffff;
-
-    /* Начальное состояние для анимации */
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
-/* Конечное состояние для анимации */
-.score-badge.is-visible {
+.scores__badge.is-visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Разные цвета для разных лет */
-.score-badge[data-year="2022"] {
+.scores__badge[data-year="2022"] {
     background-image: url('https://i.imgur.com/83j4sAW.png');
     background-color: #007bff;
 }
-
-/* Темно-синий */
-.score-badge[data-year="2023"] {
+.scores__badge[data-year="2023"] {
     background-image: url('https://i.imgur.com/n1mAnwW.png');
     background-color: #007bff;
 }
-
-/* Голубой */
-.score-badge[data-year="2024"] {
+.scores__badge[data-year="2024"] {
     background-image: url('https://i.imgur.com/W29F1Lz.png');
     background-color: #007bff;
 }
 
-/* Бирюзовый */
-
-.score-badge .score {
+.scores__badge-value {
     font-size: 2.2rem;
     font-weight: bold;
 }
 
-.score-badge .year {
+.scores__badge-year {
     font-size: 0.9rem;
     margin-top: 5px;
 }
 
-/* --- Адаптивность --- */
 @media (max-width: 768px) {
-    .scores-grid {
+    .scores__grid {
         grid-template-columns: 1fr;
-        /* Одна колонка */
     }
 }
-
 @media (max-width: 480px) {
-    .badges-container {
+    .scores__badges-container {
         flex-direction: column;
         gap: 20px;
     }
 }
 
-/* Секция с рейтингом рекомендаций */
-.recommendation-section {
+.recommendation {
     padding: 80px 0;
     background-color: #ffffff;
 }
-.recommendation-section .section-header {
+.recommendation__header {
     text-align: center;
     margin-bottom: 50px;
 }
-.recommendation-section .top-icon {
+.recommendation__icon {
     height: 50px;
     margin-bottom: 20px;
 }
-.recommendation-section .section-title {
-    color: #333; /* В этом макете заголовок не синий */
+.recommendation__title {
+    color: #333;
     font-size: 2.2rem;
     margin-bottom: 10px;
 }
-.recommendation-section .section-subtitle {
+.recommendation__subtitle {
     color: #333;
     font-size: 1.2rem;
 }
-.recommendation-section .footnote {
+.recommendation__footnote {
     text-align: center;
     margin-top: 40px;
     font-size: 0.9rem;
     color: #666;
 }
 
-/* Контейнер для двух диаграмм */
-.charts-container {
+.recommendation__charts-container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     gap: 60px;
 }
 
-/* Обертка для каждой диаграммы для позиционирования текста */
-.recommendation-chart-wrapper {
+.recommendation__chart-wrapper {
     position: relative;
     width: 250px;
     height: 250px;
 }
 
-.chart-center-text {
+.recommendation__chart-year {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -1811,76 +1516,65 @@ a {
     color: #333;
 }
 
-/* Секция "Этика" */
-.ethics-section {
+.ethics {
     position: relative;
     padding: 100px 0;
     color: #ffffff;
-    
-    /* Фоновое изображение для примера */
     background-image: url('https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
     background-size: cover;
     background-position: center;
 }
 
-/* Градиентный оверлей слева направо */
-.ethics-section::before {
+.ethics::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    
-    /* Градиент от плотного синего слева к прозрачному справа */
     background: linear-gradient(to right, rgba(0, 79, 218, 0.95), rgba(0, 79, 218, 0));
 }
 
-/* Весь контент должен быть поверх оверлея */
-.ethics-section .container {
+.ethics__container {
     position: relative;
     z-index: 2;
 }
 
-/* Сетка для двух колонок */
-.ethics-grid {
+.ethics__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
     align-items: center;
 }
 
-/* Колонка с заголовком */
-.ethics-title-column {
+.ethics__column--title {
     text-align: right;
 }
-.ethics-title-column img {
+.ethics__icon {
     height: 60px;
     margin-bottom: 20px;
 }
-.ethics-title-column h2 {
+.ethics__title {
     font-size: 3rem;
     font-weight: 700;
 }
 
-/* Колонка со списком */
-.ethics-list-column ul {
+.ethics__list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-.ethics-list-column li {
+.ethics__item {
     font-size: 1.1rem;
     line-height: 1.8;
-    padding-right: 30px; /* Отступ справа для галочки */
+    padding-right: 30px;
     position: relative;
 }
-.ethics-list-column li:not(:last-child) {
+.ethics__item:not(:last-child) {
     margin-bottom: 15px;
 }
 
-/* Добавляем галочку перед каждым элементом списка */
-.ethics-list-column li::before {
+.ethics__item::before {
     content: '✔';
     position: absolute;
     right: 0;
@@ -1888,49 +1582,44 @@ a {
     color: #ffffff;
 }
 
-
-/* --- Адаптивность --- */
 @media (max-width: 768px) {
-    .ethics-grid {
-        grid-template-columns: 1fr; /* Одна колонка */
+    .ethics__grid {
+        grid-template-columns: 1fr;
         gap: 50px;
     }
-    .ethics-title-column {
+    .ethics__column--title {
         text-align: center;
     }
-    /* На мобильных градиент лучше сделать на всю ширину для читаемости */
-    .ethics-section::before {
+    .ethics::before {
         background: linear-gradient(to right, rgba(0, 79, 218, 0.9), rgba(0, 79, 218, 0.7));
     }
 }
 
-/* Секция с табами */
-.community-tabs-section {
+.community-impact {
     padding: 80px 0;
     background-color: #ffffff;
 }
-.community-tabs-section .section-header {
+.community-impact__header {
     text-align: center;
     margin-bottom: 40px;
 }
-.community-tabs-section .top-icon {
+.community-impact__icon {
     height: 50px;
     margin-bottom: 20px;
 }
-.community-tabs-section .section-title {
+.community-impact__title {
     color: #0058FF;
     font-size: 2.5rem;
 }
 
-/* Навигация табов */
-.tabs-nav {
+.community-impact__tabs-nav {
     display: flex;
     justify-content: center;
     gap: 50px;
     border-bottom: 1px solid #e0e0e0;
     margin-bottom: 40px;
 }
-.tab-link {
+.community-impact__tab-link {
     background: none;
     border: none;
     padding: 20px 10px;
@@ -1939,45 +1628,44 @@ a {
     transition: opacity 0.3s, border-bottom-color 0.3s;
     border-bottom: 3px solid transparent;
 }
-.tab-link img {
+.community-impact__tab-link img {
     height: 35px;
     max-width: 120px;
 }
-.tab-link:hover {
+.community-impact__tab-link:hover {
     opacity: 1;
 }
-.tab-link.active {
+.community-impact__tab-link--active {
     opacity: 1;
     border-bottom-color: #0058FF;
 }
 
-/* Панели с контентом */
-.tab-panel {
-    display: none; /* Все панели по умолчанию скрыты */
+.community-impact__tab-panel {
+    display: none;
 }
-.tab-panel.active {
-    display: block; /* Активная панель становится видимой */
+.community-impact__tab-panel--active {
+    display: block;
 }
 
-.tab-panel-grid {
+.community-impact__panel-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     align-items: center;
 }
 
-.tab-panel-image {
+.community-impact__panel-image {
     height: 400px;
     background-size: cover;
     background-position: center;
     border-radius: 12px;
 }
 
-.tab-panel-text ul {
+.community-impact__list {
     list-style: none;
     padding: 0;
 }
-.tab-panel-text li {
+.community-impact__item {
     font-size: 1.1rem;
     line-height: 1.8;
     color: #333;
@@ -1985,7 +1673,7 @@ a {
     position: relative;
     margin-bottom: 15px;
 }
-.tab-panel-text li::before {
+.community-impact__item::before {
     content: '✔';
     position: absolute;
     right: 0;
@@ -1993,23 +1681,20 @@ a {
     color: #007bff;
 }
 
-/* --- Адаптивность --- */
 @media (max-width: 768px) {
-    .tab-panel-grid {
+    .community-impact__panel-grid {
         grid-template-columns: 1fr;
     }
-    .tab-panel-image {
+    .community-impact__panel-image {
         height: 250px;
     }
 }
 
-/* --- Футер --- */
-.main-footer {
+.footer {
     width: 100%;
 }
 
-/* Верхняя часть с видео */
-.footer-main {
+.footer__main {
     position: relative;
     height: 50vh;
     min-height: 350px;
@@ -2019,9 +1704,7 @@ a {
     overflow: hidden;
 }
 
-/* Стили для .background-video и .video-content-overlay можно переиспользовать из предыдущих секций,
-   но я продублирую их здесь для ясности */
-.footer-main .background-video {
+.footer__video-bg {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -2031,32 +1714,31 @@ a {
     z-index: 1;
     object-fit: cover;
 }
-.footer-main .video-content-overlay {
+.footer__overlay {
     position: relative;
     z-index: 3;
     width: 100%;
     padding: 20px;
 }
-.footer-main::before {
+.footer__main::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 40, 100, 0.1); /* Легкое затемнение для контраста */
+    background-color: rgba(0, 40, 100, 0.1);
     z-index: 2;
 }
 
-.footer-links {
+.footer__links {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 25px;
 }
 
-/* Стили для кнопки скачивания */
-.btn-download {
+.footer__button-download {
     border: 2px solid #ffffff;
     border-radius: 50px;
     padding: 15px 40px;
@@ -2066,33 +1748,32 @@ a {
     font-weight: bold;
     transition: all 0.3s ease;
 }
-.btn-download:hover {
+.footer__button-download:hover {
     background-color: #ffffff;
     color: #0058FF;
 }
 
-.link-secondary {
+.footer__link-secondary {
     color: #ffffff;
     text-decoration: none;
     font-size: 1.1rem;
 }
-.link-secondary:hover {
+.footer__link-secondary:hover {
     text-decoration: underline;
 }
 
-/* Нижняя часть с логотипами */
-.footer-sub {
-    background-color: #0c112a; /* Темно-синий фон */
+.footer__sub {
+    background-color: #0c112a;
     padding: 30px 0;
 }
-.footer-logos {
+.footer__logos {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 50px;
 }
-.footer-logos img {
+.footer__logos img {
     height: 30px;
     max-width: 120px;
     opacity: 0.8;
