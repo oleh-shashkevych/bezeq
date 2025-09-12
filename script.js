@@ -312,27 +312,74 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const createSafetyChart = () => {
         const ctx = document.getElementById('safetyChart');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['2023', '2024'],
-                    datasets: [{
-                        label: 'Количество',
-                        data: [375, 960],
-                        backgroundColor: ['#48b8d9', '#48d9a3'],
-                        borderRadius: 5,
-                    }]
+        if (!ctx) return;
+    
+        const safetyLabelsPlugin = {
+            id: 'safetyLabels',
+            afterDatasetsDraw: (chart) => {
+                const { ctx, data, chartArea: { right } } = chart;
+                ctx.save();
+    
+                const valuePadding = 12;
+                const yearPadding = 12;
+    
+                chart.getDatasetMeta(0).data.forEach((datapoint, index) => {
+                    const value = data.datasets[0].data[index];
+                    const year = data.labels[index];
+    
+                    // Отрисовка значения (375, 960)
+                    ctx.font = `700 26px SimplerPro`;
+                    ctx.fillStyle = '#010636';
+                    ctx.textAlign = 'right';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(value, datapoint.x - valuePadding, datapoint.y);
+    
+                    // Отрисовка года (2023, 2024)
+                    ctx.font = `700 17px SimplerPro`;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'right';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(year, right - yearPadding, datapoint.y);
+                });
+    
+                ctx.restore();
+            }
+        };
+    
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['2023', '2024'],
+                datasets: [{
+                    label: 'Количество',
+                    data: [375, 960],
+                    backgroundColor: ['#16ADFE', '#24D2B3'], // 1. Новые цвета
+                    barPercentage: 1.0,      // 2. Убираем отступ между полосами
+                    categoryPercentage: 1.0, // 2. Убираем отступ между полосами
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
                 },
-                options: {
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { font: { size: 14 }}, grid: { color: '#e0e0e0' }},
-                        y: { ticks: { font: { size: 14 }}, grid: { display: false }}
+                scales: {
+                    x: {
+                        reverse: true,
+                        display: false,
+                        beginAtZero: true,
+                        grace: '25%' // 3. Добавляем "воздух", чтобы число 960 не выезжало
+                    },
+                    y: {
+                        display: false,
                     }
                 }
-            });
-        }
+            },
+            plugins: [safetyLabelsPlugin]
+        });
     };
 
     const animateScores = () => {
@@ -352,75 +399,143 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const createRecommendationCharts = () => {
+        // Кастомный плагин для отрисовки всех текстовых меток
+        const recommendationLabelsPlugin = {
+            id: 'recommendationLabels',
+            afterDraw: (chart) => {
+                const { ctx, chartArea: { top, bottom, left, right } } = chart;
+                const config = chart.options.plugins.recommendationLabels;
+                if (!config) return;
+    
+                const centerX = (left + right) / 2;
+                const centerY = (top + bottom) / 2;
+    
+                ctx.save();
+                
+                // 1. Отрисовка года в центре
+                ctx.font = '400 30px SimplerPro';
+                ctx.fillStyle = '#010636';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(config.year, centerX, centerY);
+    
+                // Получаем метаданные для позиционирования
+                const pMeta = chart.getDatasetMeta(0);
+                const pArc = pMeta.data[0];
+                const yMeta = chart.getDatasetMeta(1);
+                const yArc = yMeta.data[0];
+                
+                if (!pArc || !yArc) return;
+                
+                // --- Анимация процентов ---
+                // Рассчитываем текущий процент на основе анимированной окружности
+                const pCurrentPercentage = Math.round((pArc.circumference / (2 * Math.PI)) * 100);
+                const yCurrentPercentage = Math.round((yArc.circumference / (2 * Math.PI)) * 100);
+
+                const pLabel = `${pCurrentPercentage}%`;
+                const yLabel = `${yCurrentPercentage}%`;
+                // --- Конец анимации процентов ---
+                
+                // 2. Отрисовка метки для Pelephone (внешнее кольцо)
+                ctx.font = '700 27px SimplerPro';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                const pAngle = pArc.startAngle + (Math.PI / 10);
+                const pRadius = pArc.innerRadius + (pArc.outerRadius - pArc.innerRadius) / 2;
+                const pLabelX = centerX + Math.cos(pAngle) * pRadius;
+                const pLabelY = centerY + Math.sin(pAngle) * pRadius;
+                ctx.fillText(pLabel, pLabelX, pLabelY);
+    
+                // 3. Отрисовка метки для Yes (внутреннее кольцо)
+                ctx.font = '700 27px SimplerPro';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                const yAngle = yArc.startAngle + (Math.PI / 8);
+                const yRadius = yArc.innerRadius + (yArc.outerRadius - yArc.innerRadius) / 2;
+                const yLabelX = centerX + Math.cos(yAngle) * yRadius;
+                const yLabelY = centerY + Math.sin(yAngle) * yRadius;
+                ctx.fillText(yLabel, yLabelX, yLabelY);
+    
+                ctx.restore();
+            }
+        };
+    
         const chartDefaults = {
             type: 'doughnut',
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '80%',
+                cutout: '50%', // Уменьшено для более толстых колец
                 plugins: {
                     legend: { display: false },
-                    tooltip: {
-                        enabled: true,
-                        callbacks: {
-                            label: function(context) {
-                                return ` ${context.dataset.label}: ${context.parsed}%`;
-                            }
-                        }
-                    }
+                    tooltip: { enabled: false },
                 },
                 animation: {
-                    duration: 1500
+                    animateRotate: true,
+                    animateScale: false,
+                    duration: 1500,
+                    easing: 'easeOutQuart'
                 }
-            }
+            },
+            plugins: [recommendationLabelsPlugin]
         };
-
+    
+        // График для 2024
         const ctx2024 = document.getElementById('recommendationChart2024');
         if (ctx2024) {
             new Chart(ctx2024, {
                 ...chartDefaults,
                 data: {
-                    labels: ['Yes', 'Pelephone'],
                     datasets: [{
-                        label: 'Yes',
-                        data: [89, 11],
-                        backgroundColor: ['#007bff', '#e9ecef'],
-                        borderColor: '#ffffff',
-                        borderWidth: 4,
-                        borderRadius: 5,
-                    }, {
                         label: 'Pelephone',
-                        data: [92, 8],
-                        backgroundColor: ['#00c9a7', '#e9ecef'],
-                        borderColor: '#ffffff',
-                        borderWidth: 4,
-                        borderRadius: 5,
+                        data: [92, 100 - 92],
+                        backgroundColor: ['#0B429C', '#ffffff'],
+                        borderWidth: 0,
+                    }, {
+                        label: 'Yes',
+                        data: [89, 100 - 89],
+                        backgroundColor: ['#16ADFE', '#ffffff'],
+                        borderWidth: 0,
                     }]
+                },
+                options: {
+                    ...chartDefaults.options,
+                    plugins: {
+                        ...chartDefaults.options.plugins,
+                        recommendationLabels: { year: '2024' }
+                    }
                 }
             });
         }
         
+        // График для 2023
         const ctx2023 = document.getElementById('recommendationChart2023');
         if (ctx2023) {
             new Chart(ctx2023, {
                 ...chartDefaults,
                 data: {
-                    labels: ['Yes', 'Pelephone'],
                     datasets: [{
-                        label: 'Yes',
-                        data: [88, 12],
-                        backgroundColor: ['#007bff', '#e9ecef'],
-                        borderColor: '#ffffff',
-                        borderWidth: 4,
-                        borderRadius: 5,
-                    }, {
                         label: 'Pelephone',
-                        data: [89, 11],
-                        backgroundColor: ['#00c9a7', '#e9ecef'],
-                        borderColor: '#ffffff',
-                        borderWidth: 4,
-                        borderRadius: 5,
+                        data: [89, 100 - 89],
+                        backgroundColor: ['#0B429C', '#ffffff'],
+                        borderWidth: 0,
+                    }, {
+                        label: 'Yes',
+                        data: [88, 100 - 88],
+                        backgroundColor: ['#16ADFE', '#ffffff'],
+                        borderWidth: 0,
                     }]
+                },
+                options: {
+                    ...chartDefaults.options,
+                    plugins: {
+                        ...chartDefaults.options.plugins,
+                        recommendationLabels: { year: '2023' }
+                    }
                 }
             });
         }
