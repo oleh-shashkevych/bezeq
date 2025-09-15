@@ -50,6 +50,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             },
 
+            pagination: {
+                el: '.swiper-pagination', // Указываем селектор элемента пагинации
+                clickable: true,          // Делаем точки кликабельными для навигации
+            },
+
         });
 
     }

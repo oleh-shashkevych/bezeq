@@ -77,6 +77,8 @@
 
 
     <section class="hero">
+        <img src="img/swoosh.svg" alt="" class="hero__swoosh hero__swoosh-1" aria-hidden="true">
+        <img src="img/swoosh-2.svg" alt="" class="hero__swoosh hero__swoosh-2" aria-hidden="true">
 
         <div class="hero__content">
 
@@ -89,15 +91,18 @@
                     <a href="#" class="header__cta">להורדת הדוח המלא</a>
 
                     <nav class="header__nav nav">
-
                         <ul class="nav__list">
-
                             <li class="nav__item"><a class="nav__link" href="#">נספחים</a></li>
-
-                            <li class="nav__item"><a class="nav__link" href="#">דוחות קודמים</a></li>
-
-                        </ul>
-
+                            
+                            <li class="nav__item nav__item--has-dropdown">
+                                <a class="nav__link" href="#">דוחות קודמים</a>
+                                <ul class="nav__dropdown">
+                                    <li><a href="https://esg.bezeq.co.il/" target="_blank" rel="noopener noreferrer">2023</a></li>
+                                    <li><a href="https://esg.bezeq.co.il/new/" target="_blank" rel="noopener noreferrer">2022</a></li>
+                                    <li><a href="https://esg.bezeq.co.il/2021-heb/" target="_blank" rel="noopener noreferrer">2021</a></li>
+                                </ul>
+                            </li>
+                            </ul>
                     </nav>
 
                 </div>
@@ -708,6 +713,8 @@
 
             </div>
 
+            <div class="swiper-pagination"></div>
+
         </div>
 
     </section>
@@ -954,7 +961,7 @@
 
                     </p>
 
-                    <div class="stats-combo__arrow" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stats-combo__arrow" data-aos="grow-width" data-aos-delay="100">
 
                         <img src="img/arrow.svg" alt="">
 
@@ -1160,7 +1167,7 @@
 
                 <div class="diversity__graph" data-aos="fade-left">
 
-                    <div class="diversity__arrow">
+                    <div class="diversity__arrow" data-aos="grow-width">
 
                         <img src="img/arrow-white.svg" alt="">
 
@@ -1240,11 +1247,11 @@
 
         <div class="cybersecurity__column cybersecurity__column--scroll">
 
-            <div class="cybersecurity__scroll-inner">
+            <div class="cybersecurity__scroll-inner" data-aos="fade-up">
 
 
 
-                <div class="cybersecurity__content-block" data-aos="fade-up">
+                <div class="cybersecurity__content-block">
 
                     <div class="cybersecurity__block-header">
 
@@ -1308,7 +1315,7 @@
 
 
 
-                <div class="cybersecurity__content-block" data-aos="fade-up">
+                <div class="cybersecurity__content-block">
 
                     <div class="cybersecurity__block-header">
 
@@ -1410,7 +1417,7 @@
 
                 
 
-                <div class="cybersecurity__content-block" data-aos="fade-up">
+                <div class="cybersecurity__content-block">
 
                     <div class="cybersecurity__block-header">
 
@@ -1582,7 +1589,7 @@
 
                 <div class="scores__card">
 
-                    <h3 class="scores__card-title">מוקדדים טכניים</h3>
+                    <h3 class="scores__card-title">מוקדים טכניים</h3>
 
                     <div class="scores__badges-container">
 
@@ -2000,7 +2007,7 @@
 
                                     </svg>
 
-                                    <span>מתן שירותי תקשורת מסובסדים ליותר מ־630 עמותות בשווי מצטבר של כ־5 מיליון ש"ח</span>
+                                    <span>מתן שירותי תקשורת מסובסדים ליותר מ־<strong>630 עמותות</strong> בשווי מצטבר של כ־<strong>5 מיליון ש"ח</strong></span>
 
                                 </li>
 
@@ -2012,7 +2019,7 @@
 
                                     </svg>
 
-                                    <span>בזק מאמצת את בית הספר הרצוג בחולון: קידום חינוך טכנולוגי ומדעי וליווי תלמידים ונערים בסיכון באמצעות תוכנית העשרה וחניכה</span>
+                                    <span>בזק מאמצת את <strong>בית הספר הרצוג בחולון:</strong> קידום חינוך טכנולוגי ומדעי וליווי תלמידים ונערים בסיכון באמצעות תוכנית העשרה וחניכה</span>
 
                                 </li>
 
@@ -2050,12 +2057,6 @@
 
                                 <li class="community-impact__item">
 
-                                    <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-                                        <path d="M19.9876 1.1875C20.2376 1.4375 20.2376 1.83751 19.9876 2.08751L7.19758 14.8675C6.94758 15.1175 6.54758 15.1175 6.29758 14.8675L1.17757 9.75751C0.937573 9.50751 0.937577 9.0975 1.19758 8.8575C1.44758 8.6175 1.83758 8.6175 2.08758 8.8575L6.74758 13.5175L19.0776 1.1875C19.3276 0.9375 19.7276 0.9375 19.9776 1.1875H19.9876Z" stroke="#0069FF" stroke-width="1.95" stroke-miterlimit="10"/>
-
-                                    </svg>
-
                                     <strong>yes ופלאפון משתפות פעולה למען הקהילה:</strong>
 
                                 </li>
@@ -2080,7 +2081,7 @@
 
                                     </svg>
 
-                                    <span>יותר מ־600 עובדי החברות השתתפו בשבוע אחריות תאגידית שעמד בסימן "חוסן ותקומה"</span>
+                                    <span>יותר מ־<strong>600</strong> עובדי החברות השתתפו בשבוע אחריות תאגידית שעמד בסימן "חוסן ותקומה"</span>
 
                                 </li>
 
@@ -2092,19 +2093,19 @@
 
                                     </svg>
 
-                                    <span>למעלה מ־2,300 שעות התנדבות נתרמו על ידי עובדי החברות בשנת 2024</span>
+                                    <span>למעלה מ־<strong>2,300 שעות התנדבות</strong> נתרמו על ידי עובדי החברות בשנת 2024</span>
 
                                 </li>
 
                                 <li class="community-impact__item">
 
-                                    <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0;">
 
                                         <path d="M19.9876 1.1875C20.2376 1.4375 20.2376 1.83751 19.9876 2.08751L7.19758 14.8675C6.94758 15.1175 6.54758 15.1175 6.29758 14.8675L1.17757 9.75751C0.937573 9.50751 0.937577 9.0975 1.19758 8.8575C1.44758 8.6175 1.83758 8.6175 2.08758 8.8575L6.74758 13.5175L19.0776 1.1875C19.3276 0.9375 19.7276 0.9375 19.9776 1.1875H19.9876Z" stroke="#0069FF" stroke-width="1.95" stroke-miterlimit="10"/>
 
                                     </svg>
 
-                                    <span>במסגרת פרויקט דוקו יאנג, המתקיים זו השנה השנייה, 180 נערות ונערים בסיכון שמתגוררים בשש פנימיות יצרו שישה סרטים דוקומנטריים, בעזרת תמיכה מקצועית של במאים ויוצרים וליווי של עשרות מתנדבי חברת yes.</span>
+                                    <span><strong>במסגרת פרויקט דוקו יאנג, המתקיים זו השנה השנייה, 180 נערות ונערים בסיכון שמתגוררים בשש פנימיות יצרו שישה סרטים דוקומנטריים, בעזרת תמיכה מקצועית של במאים ויוצרים וליווי של עשרות מתנדבי חברת yes.</strong></span>
 
                                 </li>
 
@@ -2136,7 +2137,7 @@
 
                                     </svg>
 
-                                    <span>אימוץ בית ספר לחינוך מיוחד: עובדי החברה מסייעים ל־70 תלמידים עם מוגבלות בין הגילים 21-6 שלומדים בבית ספר ממלכתי־דתי "דוד" בפתח תקווה</span>
+                                    <span><strong>אימוץ בית ספר לחינוך מיוחד:</strong> עובדי החברה מסייעים ל־70 תלמידים עם מוגבלות בין הגילים 21-6 שלומדים בבית ספר ממלכתי־דתי "דוד" בפתח תקווה</span>
 
                                 </li>
 
