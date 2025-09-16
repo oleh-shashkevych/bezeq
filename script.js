@@ -1,5 +1,75 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    /* Hero progressive loading */
+    const heroContent = document.querySelector('.hero__content');
+    const heroMain = document.querySelector('.hero__main');
+    const heroBg = document.querySelector('.hero__bg');
+    const heroInnerSequence = [
+        '.hero__logos',
+        '.hero__title',
+        '.hero__subtitle',
+        '.hero__scroll-down'
+    ];
+    if (heroContent && heroMain && heroBg) {
+        const revealHeroMain = () => {
+            if (!heroMain.classList.contains('load-complete')) {
+                heroMain.classList.add('load-complete');
+                heroMain.classList.remove('load-init');
+            }
+        };
+        const revealSequence = (selectors, delayBetween = 120, startDelay = 0) => {
+            selectors.forEach((sel, idx) => {
+                setTimeout(() => {
+                    document.querySelectorAll(sel + '.load-init').forEach(el => {
+                        el.classList.add('load-complete');
+                        el.classList.remove('load-init');
+                    });
+                }, startDelay + idx * delayBetween);
+            });
+        };
+        const revealHeroContent = () => {
+            if (heroBg.classList.contains('load-init')) {
+                heroBg.classList.add('load-complete');
+                heroBg.classList.remove('load-init');
+            }
+            if (heroContent.classList.contains('load-init')) {
+                heroContent.classList.add('load-complete');
+                heroContent.classList.remove('load-init');
+            }
+            // main area
+            setTimeout(revealHeroMain, 150);
+            // swooshes after 1700ms (1.7s)
+            setTimeout(() => {
+                document.querySelectorAll('.hero__swoosh').forEach(el => {
+                    if (el.classList.contains('load-init')) {
+                        el.classList.add('load-complete');
+                        el.classList.remove('load-init');
+                    }
+                });
+            }, 1700);
+            // inner items sequentially starting slightly after content
+            revealSequence(heroInnerSequence.map(s => s + '.load-init'), 150, 250);
+        };
+
+        // Wait for hero background image + logos
+        const heroBgUrl = getComputedStyle(heroBg).backgroundImage;
+        const imgs = [];
+        const pushImg = (src) => { if (src) { const i = new Image(); i.onload = checkAll; i.onerror = checkAll; i.src = src.replace(/url\(["']?(.+?)["']?\)/,'$1'); imgs.push(i);} };
+        // Extract hero background
+        pushImg(heroBgUrl);
+        const logoEl = document.querySelector('.hero__logos');
+        if (logoEl && logoEl.getAttribute('src')) pushImg(`url(${logoEl.getAttribute('src')})`);
+
+        let remaining = imgs.length;
+        function checkAll(){ remaining--; if (remaining <= 0) revealHeroContent(); }
+        if (!imgs.length) {
+            // No images to wait for
+            requestAnimationFrame(revealHeroContent);
+        }
+        // Fallback timeout in case of slow network
+        setTimeout(revealHeroContent, 2500);
+    }
+
 
 
     const animatedItems = document.querySelectorAll('.features__item, .goal-card');
@@ -1092,5 +1162,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
     });
+
+
+    // add 'loaded' to .hero after 0.5s
+    setTimeout(() => {
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            hero.classList.add('loaded');
+        }
+    }, 500);
 
 });
