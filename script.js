@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const heroMain = document.querySelector('.hero__main');
     const heroBg = document.querySelector('.hero__bg');
     const heroInnerSequence = [
+        '.hero__swoosh-mobile',
         '.hero__logos',
         '.hero__title',
         '.hero__subtitle',
@@ -36,9 +37,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 heroContent.classList.add('load-complete');
                 heroContent.classList.remove('load-init');
             }
-            // main area
+            
             setTimeout(revealHeroMain, 150);
-            // swooshes after 1700ms (1.7s)
+            
             setTimeout(() => {
                 document.querySelectorAll('.hero__swoosh').forEach(el => {
                     if (el.classList.contains('load-init')) {
@@ -47,15 +48,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }, 1700);
-            // inner items sequentially starting slightly after content
+            
             revealSequence(heroInnerSequence.map(s => s + '.load-init'), 150, 250);
         };
 
-        // Wait for hero background image + logos
+        
         const heroBgUrl = getComputedStyle(heroBg).backgroundImage;
         const imgs = [];
         const pushImg = (src) => { if (src) { const i = new Image(); i.onload = checkAll; i.onerror = checkAll; i.src = src.replace(/url\(["']?(.+?)["']?\)/,'$1'); imgs.push(i);} };
-        // Extract hero background
+        
         pushImg(heroBgUrl);
         const logoEl = document.querySelector('.hero__logos');
         if (logoEl && logoEl.getAttribute('src')) pushImg(`url(${logoEl.getAttribute('src')})`);
@@ -63,10 +64,10 @@ document.addEventListener('DOMContentLoaded', function () {
         let remaining = imgs.length;
         function checkAll(){ remaining--; if (remaining <= 0) revealHeroContent(); }
         if (!imgs.length) {
-            // No images to wait for
+            
             requestAnimationFrame(revealHeroContent);
         }
-        // Fallback timeout in case of slow network
+        
         setTimeout(revealHeroContent, 2500);
     }
 
@@ -121,8 +122,8 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             pagination: {
-                el: '.swiper-pagination', // Указываем селектор элемента пагинации
-                clickable: true,          // Делаем точки кликабельными для навигации
+                el: '.swiper-pagination', 
+                clickable: true,          
             },
 
         });
@@ -243,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 animation: {
 
-                    duration: 2400, // Увеличена продолжительность
+                    duration: 2400, 
 
                     easing: 'easeOutQuart'
 
@@ -411,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 animation: {
 
-                    duration: 2400, // Увеличена продолжительность
+                    duration: 2400, 
 
                     easing: 'easeOutQuart'
 
@@ -503,7 +504,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let currentPercent = 0;
 
-        const duration = 3000; // Увеличена продолжительность
+        const duration = 3000; 
 
         const stepTime = Math.abs(Math.floor(duration / targetPercent)) || 1;
 
@@ -693,7 +694,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 animation: {
 
-                    duration: 2400, // Увеличена продолжительность
+                    duration: 2400, 
 
                     easing: 'easeOutQuart'
 
@@ -747,7 +748,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
 
-                    // Отрисовка значения (375, 960)
+                    
 
                     ctx.font = `700 26px SimplerPro`;
 
@@ -761,7 +762,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     
 
-                    // Отрисовка года (2023, 2024)
+                    
 
                     ctx.font = `700 17px SimplerPro`;
 
@@ -819,7 +820,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 animation: {
 
-                    duration: 2400, // Увеличена продолжительность
+                    duration: 2400, 
 
                     easing: 'easeOutQuart'
 
@@ -866,173 +867,91 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const createRecommendationCharts = () => {
-
-        // Вспомогательная функция для анимации чисел
-
         const animateValue = (element, start, end, duration) => {
-
             let startTimestamp = null;
-
             const step = (timestamp) => {
-
                 if (!startTimestamp) startTimestamp = timestamp;
-
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-
-                element.innerHTML = Math.floor(progress * (end - start) + start) + '%';
-
+                
+                const easedProgress = 1 - Math.pow(1 - progress, 3); 
+                element.innerHTML = Math.floor(easedProgress * (end - start) + start) + '%';
                 if (progress < 1) {
-
                     window.requestAnimationFrame(step);
-
                 }
-
             };
-
             window.requestAnimationFrame(step);
-
         };
-
     
-
         const chartDefaults = {
-
             type: 'doughnut',
-
             options: {
-
                 responsive: true,
-
                 maintainAspectRatio: false,
-
                 cutout: '50%',
-
                 plugins: {
-
                     legend: { display: false },
-
                     tooltip: { enabled: false },
-
                 },
-
                 animation: {
-
                     animateRotate: true,
-
                     animateScale: false,
-
-                    duration: 3000, // Увеличена продолжительность
-
+                    duration: 900, 
                     easing: 'easeOutQuart'
-
                 }
-
             }
-
         };
-
     
-
-        // График для 2024
-
+        
         const ctx2024 = document.getElementById('recommendationChart2024');
-
         if (ctx2024) {
-
             new Chart(ctx2024, {
-
                 ...chartDefaults,
-
                 data: {
-
                     datasets: [{
-
                         label: 'Pelephone',
-
                         data: [92, 100 - 92],
-
                         backgroundColor: ['#1229c6', '#ffffff'],
-
                         borderWidth: 0,
-
                     }, {
-
                         label: 'Yes',
-
                         data: [89, 100 - 89],
-
                         backgroundColor: ['#00c0e8', '#ffffff'],
-
                         borderWidth: 0,
-
                     }]
-
                 }
-
             });
-
+        }
+        
+        
+        const ctx2023 = document.getElementById('recommendationChart2023');
+        if (ctx2023) {
+            new Chart(ctx2023, {
+                ...chartDefaults,
+                data: {
+                    datasets: [{
+                        label: 'Pelephone',
+                        data: [89, 100 - 89],
+                        backgroundColor: ['#1229c6', '#ffffff'],
+                        borderWidth: 0,
+                    }, {
+                        label: 'Yes',
+                        data: [88, 100 - 88],
+                        backgroundColor: ['#00c0e8', '#ffffff'],
+                        borderWidth: 0,
+                    }]
+                }
+            });
         }
 
         
-
-        // График для 2023
-
-        const ctx2023 = document.getElementById('recommendationChart2023');
-
-        if (ctx2023) {
-
-            new Chart(ctx2023, {
-
-                ...chartDefaults,
-
-                data: {
-
-                    datasets: [{
-
-                        label: 'Pelephone',
-
-                        data: [89, 100 - 89],
-
-                        backgroundColor: ['#1229c6', '#ffffff'],
-
-                        borderWidth: 0,
-
-                    }, {
-
-                        label: 'Yes',
-
-                        data: [88, 100 - 88],
-
-                        backgroundColor: ['#00c0e8', '#ffffff'],
-
-                        borderWidth: 0,
-
-                    }]
-
-                }
-
-            });
-
-        }
-
-
-
-        // Запускаем анимацию чисел после создания графиков
-
         const recommendationSection = document.getElementById('recommendation-section');
-
         if (recommendationSection) {
-
             recommendationSection.querySelectorAll('.percentage-value').forEach(span => {
-
                 const finalValue = parseInt(span.dataset.value, 10);
-
-                animateValue(span, 0, finalValue, 3000); // Увеличена продолжительность
-
+                
+                animateValue(span, 0, finalValue, 800); 
             });
-
         }
-
     };
 
 
@@ -1051,7 +970,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             link.addEventListener('click', () => {
 
-                const targetId = link.dataset.tab; // e.g., "tab-bezeq"
+                const targetId = link.dataset.tab; 
 
 
 
@@ -1065,7 +984,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 
 
-                // Находим нужную панель по ID и делаем ее активной
+                
 
                 const targetPanel = document.getElementById(targetId);
 
@@ -1083,88 +1002,59 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    const observer = new IntersectionObserver((entries, observerInstance) => {
-
+    const observerCallback = (entries, observerInstance) => {
         entries.forEach(entry => {
-
             if (entry.isIntersecting) {
-
                 const targetId = entry.target.id;
 
-
-
                 if (targetId === 'charts-section') createCustomWasteChart();
-
                 if (targetId === 'diversity-chart-section') createDiversityChart();
-
                 if (targetId === 'safety-chart-section') createSafetyChart();
-
                 if (targetId === 'recommendation-section') createRecommendationCharts();
-
                 if (targetId === 'water-chart-section') createWaterChart();
 
-
-
                 if (targetId === 'progress-section') {
-
                     const circles = entry.target.querySelectorAll('.progress__circle');
-
                     circles.forEach(circle => {
-
                         if (!circle.classList.contains('animated')) {
-
                             animateProgress(circle);
-
                             circle.classList.add('animated');
-
                         }
-
                     });
-
                 }
-
                 
-
                 observerInstance.unobserve(entry.target);
-
             }
-
         });
+    };
 
-    }, { threshold: 0.75 });
+    const mainObserver = new IntersectionObserver(observerCallback, { threshold: 0.75 });
+
+    const recommendationObserver = new IntersectionObserver(observerCallback, { threshold: 0.5 });
 
 
+    const recommendationSection = document.getElementById('recommendation-section');
+    if (recommendationSection) {
+        
+        recommendationObserver.observe(recommendationSection);
+    }
 
-    const sectionsToObserve = [
-
+    const otherSectionsToObserve = [
         document.getElementById('charts-section'),
-
         document.getElementById('progress-section'),
-
         document.getElementById('diversity-chart-section'),
-
         document.getElementById('safety-chart-section'),
-
-        document.getElementById('recommendation-section'),
-
         document.getElementById('water-chart-section')
-
     ];
 
-
-
-    sectionsToObserve.forEach(section => {
-
+    otherSectionsToObserve.forEach(section => {
         if (section) {
-
-            observer.observe(section);
-
+            mainObserver.observe(section);
         }
-
     });
 
 
-    // add 'loaded' to .hero after 0.5s
+    
     setTimeout(() => {
         const hero = document.querySelector('.hero');
         if (hero) {
