@@ -5418,6 +5418,8 @@ a {
     .recommendation__charts-container {
         flex-direction: column;
         align-items: center;
+        width: 250px;
+        margin: 0 auto;
     }
 
 }
