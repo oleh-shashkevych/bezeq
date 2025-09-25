@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    const isIOS = () => {
+        return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    };
+
     /* Performance Utilities */
     const PerformanceUtils = {
         /**
@@ -1032,6 +1036,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const createRecommendationCharts = () => {
+        // Анимация процентов останется для всех устройств
         const animateValue = (element, start, end, duration) => {
             let startTimestamp = null;
             const step = (timestamp) => {
@@ -1046,74 +1051,102 @@ document.addEventListener('DOMContentLoaded', function () {
             };
             window.requestAnimationFrame(step);
         };
-    
-        const chartDefaults = {
-            type: 'doughnut',
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '50%',
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { enabled: false },
-                },
-                animation: {
-                    animateRotate: true,
-                    animateScale: false,
-                    duration: 900, 
-                    easing: 'easeOutQuart'
-                }
-            }
-        };
 
-        // Wrap chart creation in requestAnimationFrame
-        requestAnimationFrame(() => {
-            const ctx2024 = document.getElementById('recommendationChart2024');
-            if (ctx2024) {
-                new Chart(ctx2024, {
-                    ...chartDefaults,
-                    data: {
-                        datasets: [{
-                            label: 'Pelephone',
-                            data: [92, 100 - 92],
-                            backgroundColor: ['#1229c6', '#ffffff'],
-                            borderWidth: 0,
-                        }, {
-                            label: 'Yes',
-                            data: [89, 100 - 89],
-                            backgroundColor: ['#00c0e8', '#ffffff'],
-                            borderWidth: 0,
-                        }]
-                    }
-                });
-            }
+        if (isIOS()) {
+            // --- ЛОГИКА ДЛЯ iOS: ЗАМЕНА CANVAS НА IMG ---
+            const chartWrappers = document.querySelectorAll('.recommendation__chart-wrapper');
             
-            const ctx2023 = document.getElementById('recommendationChart2023');
-            if (ctx2023) {
-                new Chart(ctx2023, {
-                    ...chartDefaults,
-                    data: {
-                        datasets: [{
-                            label: 'Pelephone',
-                            data: [89, 100 - 89],
-                            backgroundColor: ['#1229c6', '#ffffff'],
-                            borderWidth: 0,
-                        }, {
-                            label: 'Yes',
-                            data: [88, 100 - 88],
-                            backgroundColor: ['#00c0e8', '#ffffff'],
-                            borderWidth: 0,
-                        }]
+            chartWrappers.forEach(wrapper => {
+                const canvas = wrapper.querySelector('canvas');
+                if (!canvas) return;
+
+                const img = document.createElement('img');
+                img.classList.add('recommendation__chart-image'); // Класс для стилизации
+
+                // Определяем, какую картинку использовать, на основе ID канваса
+                if (canvas.id === 'recommendationChart2024') {
+                    img.src = 'img/graph-1.png'; // Убедитесь, что эта картинка существует
+                } else if (canvas.id === 'recommendationChart2023') {
+                    img.src = 'img/graph-2.png'; // Убедитесь, что эта картинка существует
+                }
+
+                // Заменяем canvas на изображение
+                canvas.parentNode.replaceChild(img, canvas);
+            });
+
+            document.querySelectorAll('.recommendation__chart-label, .recommendation__chart-year').forEach(el => {
+                el.style.display = 'none';
+            });
+
+        } else {
+            // --- СУЩЕСТВУЮЩАЯ ЛОГИКА ДЛЯ ВСЕХ ОСТАЛЬНЫХ УСТРОЙСТВ ---
+            const chartDefaults = {
+                type: 'doughnut',
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '50%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false },
+                    },
+                    animation: {
+                        animateRotate: true,
+                        animateScale: false,
+                        duration: 900, 
+                        easing: 'easeOutQuart'
                     }
-                });
-            }
-        });
+                }
+            };
+
+            requestAnimationFrame(() => {
+                const ctx2024 = document.getElementById('recommendationChart2024');
+                if (ctx2024) {
+                    new Chart(ctx2024, {
+                        ...chartDefaults,
+                        data: {
+                            datasets: [{
+                                label: 'Pelephone',
+                                data: [92, 100 - 92],
+                                backgroundColor: ['#1229c6', '#ffffff'],
+                                borderWidth: 0,
+                            }, {
+                                label: 'Yes',
+                                data: [89, 100 - 89],
+                                backgroundColor: ['#00c0e8', '#ffffff'],
+                                borderWidth: 0,
+                            }]
+                        }
+                    });
+                }
+                
+                const ctx2023 = document.getElementById('recommendationChart2023');
+                if (ctx2023) {
+                    new Chart(ctx2023, {
+                        ...chartDefaults,
+                        data: {
+                            datasets: [{
+                                label: 'Pelephone',
+                                data: [89, 100 - 89],
+                                backgroundColor: ['#1229c6', '#ffffff'],
+                                borderWidth: 0,
+                            }, {
+                                label: 'Yes',
+                                data: [88, 100 - 88],
+                                backgroundColor: ['#00c0e8', '#ffffff'],
+                                borderWidth: 0,
+                            }]
+                        }
+                    });
+                }
+            });
+        }
         
+        // Запускаем анимацию процентов независимо от типа устройства
         const recommendationSection = document.getElementById('recommendation-section');
         if (recommendationSection) {
             recommendationSection.querySelectorAll('.percentage-value').forEach(span => {
                 const finalValue = parseInt(span.dataset.value, 10);
-                
                 animateValue(span, 0, finalValue, 800); 
             });
         }
