@@ -1,5 +1,165 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    /* Performance Utilities */
+    const PerformanceUtils = {
+        /**
+         * Throttle function - limits execution to once per interval (good for high-frequency events)
+         * @param {Function} func - Function to throttle
+         * @param {number} delay - Delay in milliseconds
+         * @returns {Function} Throttled function
+         */
+        throttle: (func, delay) => {
+            let lastExecution = 0;
+            let timeoutId = null;
+            
+            return function(...args) {
+                const now = Date.now();
+                const timeSinceLastExecution = now - lastExecution;
+                
+                if (timeSinceLastExecution >= delay) {
+                    lastExecution = now;
+                    func.apply(this, args);
+                } else if (!timeoutId) {
+                    timeoutId = setTimeout(() => {
+                        lastExecution = Date.now();
+                        timeoutId = null;
+                        func.apply(this, args);
+                    }, delay - timeSinceLastExecution);
+                }
+            };
+        },
+
+        /**
+         * Debounce function - delays execution until after delay has passed since last call
+         * @param {Function} func - Function to debounce
+         * @param {number} delay - Delay in milliseconds
+         * @returns {Function} Debounced function
+         */
+        debounce: (func, delay) => {
+            let timeoutId;
+            return function(...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func.apply(this, args), delay);
+            };
+        },
+
+        /**
+         * Request Animation Frame throttle - limits to display refresh rate
+         * @param {Function} func - Function to throttle
+         * @returns {Function} RAF throttled function
+         */
+        rafThrottle: (func) => {
+            let rafId = null;
+            return function(...args) {
+                if (rafId === null) {
+                    rafId = requestAnimationFrame(() => {
+                        rafId = null;
+                        func.apply(this, args);
+                    });
+                }
+            };
+        }
+    };
+
+    /* Timing Constants - Optimized for best performance/UX balance */
+    const TIMING = {
+        HOVER_THROTTLE: 16,     // 60fps for smooth hover effects
+        CLICK_DEBOUNCE: 150,    // Prevent accidental double-clicks
+        SCROLL_THROTTLE: 16,    // 60fps for smooth scroll effects
+        ANIMATION_DELAY: 100    // Slight delay for perceived responsiveness
+    };
+
+    /* Dynamic Image Path Fixer */
+    const ImagePathFixer = {
+        /**
+         * Fixes image paths to work with any version directory (V3, V4, etc.)
+         * Converts absolute paths like "/img/..." to relative paths like "img/..."
+         */
+        fixImagePaths: () => {
+            const startTime = performance.now();
+            let fixedCount = 0;
+
+            // Fix img src attributes
+            const images = document.querySelectorAll('img[src]');
+            images.forEach(img => {
+                const src = img.getAttribute('src');
+                if (src && src.startsWith('/img/')) {
+                    const newSrc = src.substring(1); // Remove leading slash
+                    img.setAttribute('src', newSrc);
+                    fixedCount++;
+                }
+            });
+
+            // Fix CSS background images in style attributes
+            const elementsWithStyle = document.querySelectorAll('[style*="background-image"]');
+            elementsWithStyle.forEach(el => {
+                const style = el.getAttribute('style');
+                if (style && style.includes('url(/img/')) {
+                    const newStyle = style.replace(/url\(\/img\//g, 'url(img/');
+                    el.setAttribute('style', newStyle);
+                    fixedCount++;
+                }
+            });
+
+            // Fix dynamically loaded images (for future reference)
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach((node) => {
+                            if (node.nodeType === Node.ELEMENT_NODE) {
+                                // Fix new img elements
+                                if (node.tagName === 'IMG' && node.getAttribute('src')?.startsWith('/img/')) {
+                                    const src = node.getAttribute('src');
+                                    node.setAttribute('src', src.substring(1));
+                                }
+                                // Fix img elements within added nodes
+                                const newImages = node.querySelectorAll?.('img[src^="/img/"]');
+                                newImages?.forEach(img => {
+                                    const src = img.getAttribute('src');
+                                    img.setAttribute('src', src.substring(1));
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Start observing for dynamic content
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+
+            const endTime = performance.now();
+            
+            if (typeof console !== 'undefined' && console.info) {
+                console.info(`🔧 Image paths fixed: ${fixedCount} paths in ${(endTime - startTime).toFixed(2)}ms`);
+            }
+
+            return { fixedCount, executionTime: endTime - startTime };
+        },
+
+        /**
+         * Creates a helper function to ensure image paths are always relative
+         * @param {string} imagePath - The image path to fix
+         * @returns {string} Fixed relative path
+         */
+        ensureRelativePath: (imagePath) => {
+            if (typeof imagePath !== 'string') return imagePath;
+            
+            // If it starts with /img/, make it relative
+            if (imagePath.startsWith('/img/')) {
+                return imagePath.substring(1);
+            }
+            
+            // If it's already relative or external, return as-is
+            return imagePath;
+        }
+    };
+
+    // Fix image paths immediately
+    ImagePathFixer.fixImagePaths();
+
     /* Hero progressive loading */
     const heroContent = document.querySelector('.hero__content');
     const heroMain = document.querySelector('.hero__main');
@@ -85,17 +245,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
         lottiePlayer.loop = true;
 
+        let hasStarted = false;
         const start = () => {
-
-            try { lottiePlayer.play(); } catch (e) { }
-
+            if (hasStarted) return; // Prevent multiple starts
+            hasStarted = true;
+            try { 
+                lottiePlayer.play(); 
+            } catch (e) { 
+                console.warn('Lottie player failed to start:', e);
+            }
         };
 
-        lottiePlayer.addEventListener('DOMLoaded', start);
-
-        lottiePlayer.addEventListener('loaded', start);
-
+        // Use only the most reliable event - 'ready' is typically the last to fire
         lottiePlayer.addEventListener('ready', start);
+        
+        // Fallback with timeout in case ready event doesn't fire
+        setTimeout(start, TIMING.ANIMATION_DELAY);
 
 
 
@@ -236,11 +401,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 maintainAspectRatio: false,
 
-                onHover: (event, chartElement) => {
+                onHover: PerformanceUtils.throttle((event, chartElement) => {
 
                     event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
 
-                },
+                }, TIMING.HOVER_THROTTLE),
 
                 animation: {
 
@@ -464,11 +629,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 },
 
-                onHover: (e, el) => {
+                onHover: PerformanceUtils.throttle((e, el) => {
 
                     e.native.target.style.cursor = el[0] ? 'pointer' : 'default';
 
-                }
+                }, TIMING.HOVER_THROTTLE)
 
             },
 
@@ -686,11 +851,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 },
 
-                onHover: (e, el) => {
+                onHover: PerformanceUtils.throttle((e, el) => {
 
                     e.native.target.style.cursor = el[0] ? 'pointer' : 'default';
 
-                },
+                }, TIMING.HOVER_THROTTLE),
 
                 animation: {
 
@@ -900,49 +1065,49 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         };
-    
-        
-        const ctx2024 = document.getElementById('recommendationChart2024');
-        if (ctx2024) {
-            new Chart(ctx2024, {
-                ...chartDefaults,
-                data: {
-                    datasets: [{
-                        label: 'Pelephone',
-                        data: [92, 100 - 92],
-                        backgroundColor: ['#1229c6', '#ffffff'],
-                        borderWidth: 0,
-                    }, {
-                        label: 'Yes',
-                        data: [89, 100 - 89],
-                        backgroundColor: ['#00c0e8', '#ffffff'],
-                        borderWidth: 0,
-                    }]
-                }
-            });
-        }
-        
-        
-        const ctx2023 = document.getElementById('recommendationChart2023');
-        if (ctx2023) {
-            new Chart(ctx2023, {
-                ...chartDefaults,
-                data: {
-                    datasets: [{
-                        label: 'Pelephone',
-                        data: [89, 100 - 89],
-                        backgroundColor: ['#1229c6', '#ffffff'],
-                        borderWidth: 0,
-                    }, {
-                        label: 'Yes',
-                        data: [88, 100 - 88],
-                        backgroundColor: ['#00c0e8', '#ffffff'],
-                        borderWidth: 0,
-                    }]
-                }
-            });
-        }
 
+        // Wrap chart creation in requestAnimationFrame
+        requestAnimationFrame(() => {
+            const ctx2024 = document.getElementById('recommendationChart2024');
+            if (ctx2024) {
+                new Chart(ctx2024, {
+                    ...chartDefaults,
+                    data: {
+                        datasets: [{
+                            label: 'Pelephone',
+                            data: [92, 100 - 92],
+                            backgroundColor: ['#1229c6', '#ffffff'],
+                            borderWidth: 0,
+                        }, {
+                            label: 'Yes',
+                            data: [89, 100 - 89],
+                            backgroundColor: ['#00c0e8', '#ffffff'],
+                            borderWidth: 0,
+                        }]
+                    }
+                });
+            }
+            
+            const ctx2023 = document.getElementById('recommendationChart2023');
+            if (ctx2023) {
+                new Chart(ctx2023, {
+                    ...chartDefaults,
+                    data: {
+                        datasets: [{
+                            label: 'Pelephone',
+                            data: [89, 100 - 89],
+                            backgroundColor: ['#1229c6', '#ffffff'],
+                            borderWidth: 0,
+                        }, {
+                            label: 'Yes',
+                            data: [88, 100 - 88],
+                            backgroundColor: ['#00c0e8', '#ffffff'],
+                            borderWidth: 0,
+                        }]
+                    }
+                });
+            }
+        });
         
         const recommendationSection = document.getElementById('recommendation-section');
         if (recommendationSection) {
@@ -968,7 +1133,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         tabLinks.forEach(link => {
 
-            link.addEventListener('click', () => {
+            link.addEventListener('click', PerformanceUtils.debounce(() => {
 
                 const targetId = link.dataset.tab; 
 
@@ -994,7 +1159,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 }
 
-            });
+            }, TIMING.CLICK_DEBOUNCE));
 
         });
 
@@ -1062,4 +1227,98 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }, 500);
 
+    /* Scroll to Top Button */
+    const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+    if (scrollToTopBtn) {
+        // Show/hide button based on scroll position
+        const toggleScrollButton = PerformanceUtils.throttle(() => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const showThreshold = 300; // Show after scrolling 300px
+            
+            if (scrollTop > showThreshold) {
+                scrollToTopBtn.classList.add('show');
+            } else {
+                scrollToTopBtn.classList.remove('show');
+            }
+        }, TIMING.SCROLL_THROTTLE);
+
+        // Smooth scroll to top functionality
+        const scrollToTop = () => {
+            const scrollStep = -window.scrollY / (500 / 15); // 500ms duration
+            const scrollInterval = setInterval(() => {
+                if (window.scrollY !== 0) {
+                    window.scrollBy(0, scrollStep);
+                } else {
+                    clearInterval(scrollInterval);
+                }
+            }, 15);
+        };
+
+        // Alternative smooth scroll (modern browsers)
+        const smoothScrollToTop = () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
+
+        // Event listeners
+        window.addEventListener('scroll', toggleScrollButton);
+        scrollToTopBtn.addEventListener('click', PerformanceUtils.debounce(() => {
+            // Use modern smooth scroll if supported, fallback to custom animation
+            if ('scrollBehavior' in document.documentElement.style) {
+                smoothScrollToTop();
+            } else {
+                scrollToTop();
+            }
+        }, TIMING.CLICK_DEBOUNCE));
+
+        // Initialize button state
+        toggleScrollButton();
+    }
+
+    /* Performance Monitoring (Development) */
+    if (typeof console !== 'undefined' && console.info) {
+        console.info('🚀 Performance optimizations active:', {
+            'Chart hover throttling': `${TIMING.HOVER_THROTTLE}ms`,
+            'Tab click debouncing': `${TIMING.CLICK_DEBOUNCE}ms`,
+            'Scroll to top throttling': `${TIMING.SCROLL_THROTTLE}ms`,
+            'Dynamic image paths': 'Auto-fixed for any version',
+            'Lottie listener optimization': 'Enabled',
+            'Intersection observers': 'Built-in throttling'
+        });
+    }
+
 });
+
+/*
+ * PERFORMANCE OPTIMIZATIONS SUMMARY:
+ * * ✅ Chart hover events: Throttled to 16ms (60fps) to prevent excessive cursor updates
+ * ✅ Tab navigation clicks: Debounced to 150ms to prevent double-clicks
+ * ✅ Scroll to top button: Throttled scroll listener (16ms) + debounced click (150ms)
+ * ✅ Dynamic image paths: Auto-fixes absolute paths to work with any version directory
+ * ✅ Lottie animations: Reduced from 3 to 1 event listener + fallback timeout
+ * ✅ Intersection observers: Already optimized with built-in browser throttling
+ * ✅ Animation frames: Using requestAnimationFrame for smooth animations
+ * * TIMING RATIONALE:
+ * - 16ms throttle = 60fps, matches display refresh rate for smooth UX
+ * - 150ms debounce = Optimal balance between responsiveness and double-click prevention
+ * - 100ms animation delay = Perceived immediate response while allowing cleanup
+ * * SCROLL TO TOP FEATURES:
+ * - Shows after 300px scroll distance
+ * - Smooth scroll animation with fallback for older browsers
+ * - Throttled scroll listener for performance
+ * - Debounced click handler to prevent rapid firing
+ * * DYNAMIC IMAGE PATH FEATURES:
+ * - Automatically converts "/img/..." to "img/..." for version independence
+ * - Works with V3, V4, V5, or any future version directory
+ * - Monitors DOM for dynamically added images
+ * - Provides utility function: ImagePathFixer.ensureRelativePath()
+ * - Zero configuration required - works automatically
+ */
+
+// Global utility for developers
+window.BezeqImageUtils = {
+    fixPath: (imagePath) => ImagePathFixer.ensureRelativePath(imagePath),
+    fixAllPaths: () => ImagePathFixer.fixImagePaths()
+};
