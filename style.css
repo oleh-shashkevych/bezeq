@@ -149,7 +149,7 @@ a {
     inset: 0;
     width: 100%;
     height: 100%;
-    background-image: url('./img/hero.webp');
+    background-image: url('./img/hero.png');
     background-size: cover;
     background-position: center;
     pointer-events: none;
@@ -719,7 +719,7 @@ a {
 
 .testimonial__image {
 
-    background-image: url('./img/photo.webp');
+    background-image: url('./img/photo.png');
 
     background-size: cover;
 
@@ -737,7 +737,7 @@ a {
 
     padding: 75px 0 50px;
 
-    background-image: url('./img/bg-1.webp');
+    background-image: url('./img/bg-1.png');
 
     background-size: cover;
 
@@ -1273,7 +1273,7 @@ a {
 
     padding: 34px 0;
 
-    background-image: url('./img/flowers.webp');
+    background-image: url('./img/flowers.png');
 
     background-size: cover;
 
@@ -2120,7 +2120,7 @@ a {
 
     inset: 0;
 
-    background: url('./img/diversity-bg.webp') center/cover no-repeat;
+    background: url('./img/diversity-bg.png') center/cover no-repeat;
 
     z-index: 1;
 
@@ -3091,7 +3091,7 @@ a {
 
     color: #ffffff;
 
-    background-image: url('img/ethics-bg.webp');
+    background-image: url('img/ethics-bg.png');
 
     background-size: cover;
 
