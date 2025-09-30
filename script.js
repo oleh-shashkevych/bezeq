@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    const isIOS = () => {
-        return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+     const isMobileResolution = () => {
+        // A common breakpoint for tablets/mobile devices (e.g., max 768px or 800px)
+        const MOBILE_MAX_WIDTH = 768; 
+        return window.innerWidth <= MOBILE_MAX_WIDTH;
     };
 
     /* Performance Utilities */
@@ -1052,8 +1054,8 @@ document.addEventListener('DOMContentLoaded', function () {
             window.requestAnimationFrame(step);
         };
 
-        if (isIOS()) {
-            // --- ЛОГИКА ДЛЯ iOS: ЗАМЕНА CANVAS НА IMG ---
+        if (isMobileResolution()) {
+            // --- ЛОГИКА ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ/НИЗКОГО РАЗРЕШЕНИЯ: ЗАМЕНА CANVAS НА IMG ---
             const chartWrappers = document.querySelectorAll('.recommendation__chart-wrapper');
             
             chartWrappers.forEach(wrapper => {
@@ -1061,19 +1063,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!canvas) return;
 
                 const img = document.createElement('img');
-                img.classList.add('recommendation__chart-image'); // Класс для стилизации
+                img.classList.add('recommendation__chart-image'); 
 
                 // Определяем, какую картинку использовать, на основе ID канваса
                 if (canvas.id === 'recommendationChart2024') {
-                    img.src = 'img/graph-1.png'; // Убедитесь, что эта картинка существует
+                    img.src = 'img/graph-1.png'; 
                 } else if (canvas.id === 'recommendationChart2023') {
-                    img.src = 'img/graph-2.png'; // Убедитесь, что эта картинка существует
+                    img.src = 'img/graph-2.png'; 
                 }
 
                 // Заменяем canvas на изображение
                 canvas.parentNode.replaceChild(img, canvas);
             });
 
+            // Hide the labels that are typically drawn by Chart.js
             document.querySelectorAll('.recommendation__chart-label, .recommendation__chart-year').forEach(el => {
                 el.style.display = 'none';
             });
