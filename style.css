@@ -5440,12 +5440,6 @@ html {
 }
 
 
-
-.testimonial__content{
-    
-
-}
-
 .testimonial_inner_container{
     max-height: 100vh;
     overflow-y: scroll;
@@ -5517,9 +5511,6 @@ html {
     height: 600px;
 }
 
-.hero__logos {
-}
-
 @media only screen and (max-width: 1650px){
     .hero__swoosh-1{
         right: -2%;
@@ -5571,4 +5562,182 @@ html {
     z-index: 4;
     right: 20px;
     bottom: 30px;
+    left: unset;
+}
+
+/* ==========================================================================
+   LTR (English Version) Overrides
+   ========================================================================== */
+
+/* * Эти стили применяются только для `dir="ltr"` (английская версия).
+ * Они переопределяют RTL-специфичные правила, такие как text-align,
+ * позиционирование (left/right) и отступы (padding/margin).
+*/
+
+/* --- General & Animations --- */
+[dir="ltr"] [data-aos="grow-width"] {
+    /* Анимация роста появляется слева */
+    transform-origin: left;
+}
+
+/* --- Header & Hero Section --- */
+[dir="ltr"] .hero__main-wrapper {
+    padding-inline-start: 0;
+    padding-left: 8vw; /* Отступ слева вместо справа */
+}
+
+[dir="ltr"] .hero__main {
+    text-align: left; /* Выравнивание текста по левому краю */
+}
+
+[dir="ltr"] .hero__swoosh-1 {
+    right: auto; /* Сбрасываем позицию справа */
+    left: 0;     /* Позиционируем слева */
+}
+
+[dir="ltr"] .nav__item--has-dropdown > a::after {
+    margin-right: 0;
+    margin-left: 8px; /* Шеврон справа от текста */
+}
+
+/* --- Testimonial Section --- */
+[dir="ltr"] .testimonial__content {
+    padding: 50px 0 50px 60px; /* Отступ слева */
+    text-align: left;
+    align-items: flex-start;
+}
+
+/* --- Company Stats --- */
+[dir="ltr"] .company-stats__title {
+    text-align: left;
+}
+
+[dir="ltr"] .stat-card {
+    /* (top, right, bottom, left) */
+    padding: 18px 26px 22px 18px; /* Меняем отступы справа и слева */
+}
+
+[dir="ltr"] .stat-card__logo {
+    object-position: left top; /* Лого в левом верхнем углу */
+}
+
+/* --- Partners Section --- */
+[dir="ltr"] .partners__item:not(:last-child)::after {
+    left: auto;
+    right: -18px; /* Разделитель справа */
+}
+
+@media (max-width: 992px) {
+    [dir="ltr"] .partners__item:not(:last-child)::after {
+        left: auto;
+        right: -12px;
+    }
+}
+
+[dir="ltr"] .testimonial__title {
+    max-width: 100%;
+}
+
+/* --- Charts & Stats Combo --- */
+[dir="ltr"] .charts__content {
+    text-align: left;
+}
+
+[dir="ltr"] .stats-combo__column--water {
+    padding-inline-end: 0;
+    padding-right: 40px; /* Отступ справа */
+}
+
+[dir="ltr"] .stats-combo__image {
+    margin-inline-start: 0;
+    margin-left: auto; /* Картинка прижимается вправо */
+}
+
+/* --- Safety Section --- */
+[dir="ltr"] .safety__text-content {
+    text-align: left;
+}
+
+[dir="ltr"] .safety__chart-wrapper {
+    direction: ltr; /* Убеждаемся, что график рендерится слева направо */
+}
+
+/* --- Cybersecurity Section --- */
+[dir="ltr"] .cybersecurity__column--scroll {
+    /* (top, right, bottom, left) */
+    padding: 16px 20px 16px 40px;
+}
+
+[dir="ltr"] .cybersecurity__block-header svg {
+    object-position: left;
+}
+
+[dir="ltr"] .cybersecurity__list-item {
+    gap: 15px; /* Немного увеличим разрыв для LTR */
+}
+
+[dir="ltr"] .cybersecurity__list-item svg {
+    margin-top: 14px; /* Коррекция для выравнивания галочки */
+    transform: none;
+}
+
+/* --- Ethics Section --- */
+[dir="ltr"] .ethics__column--title {
+    text-align: left;
+}
+
+[dir="ltr"] .ethics__list {
+    text-align: left;
+}
+
+[dir="ltr"] .charts__title {
+    max-width: 400px;
+}
+
+[dir="ltr"] .stats-combo__arrow img,
+[dir="ltr"] .diversity__arrow img {
+    transform: scaleX(-1);
+}
+
+[dir="ltr"] .recommendation__chart-label {
+    direction: rtl;
+}
+
+/* --- Community Impact Section --- */
+@media (max-width: 768px) {
+    [dir="ltr"] .community-impact__header {
+        text-align: left;
+    }
+}
+
+/* --- Scrollbar fix for Testimonial --- */
+/* Возвращаем стандартное поведение скроллбара для LTR */
+[dir="ltr"] .testimonial_inner_container {
+    direction: rtl;
+}
+
+[dir="ltr"] .testimonial_inner_container > * {
+    direction: ltr;
+}
+
+/* --- Media Query Adjustments --- */
+@media only screen and (max-width: 1650px) {
+    [dir="ltr"] .hero__swoosh-1 {
+        left: -2%;
+        right: auto;
+    }
+}
+
+@media (max-width: 992px) {
+    [dir="ltr"] .testimonial__content {
+        align-items: center; /* Центрируем контент на планшетах */
+        text-align: center;
+        padding: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    [dir="ltr"] .hero__main-wrapper {
+        padding-left: 0; /* Убираем отступ на мобильных */
+    }
 }
