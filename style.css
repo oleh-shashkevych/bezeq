@@ -5638,6 +5638,19 @@ html {
     max-width: 100%;
 }
 
+[dir="ltr"] .company-stats__swoosh {
+    left: unset;
+    right: -5vw;
+    transform: scaleX(-1);
+}
+
+@media (max-width: 992px) {
+    [dir="ltr"] .company-stats__swoosh {
+        right: -10vw;
+        left: unset;
+    }
+}
+
 /* --- Charts & Stats Combo --- */
 [dir="ltr"] .charts__content {
     text-align: left;
