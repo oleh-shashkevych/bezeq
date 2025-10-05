@@ -3877,7 +3877,7 @@ a {
 
         flex-basis: calc(33.333% - 20px);
 
-        gap: 10px;
+        gap: 0;
 
     }
 
@@ -4412,7 +4412,7 @@ a {
 
     .features__grid {
 
-        gap: 15px;
+        gap: 25px 15px;
 
     }
 
@@ -5586,13 +5586,17 @@ html {
     padding-left: 8vw; /* Отступ слева вместо справа */
 }
 
+[dir="ltr"] .hero__logos {
+    margin-bottom: 0;
+}
+
 [dir="ltr"] .hero__main {
     text-align: left; /* Выравнивание текста по левому краю */
 }
 
 [dir="ltr"] .hero__swoosh-1 {
     right: auto; /* Сбрасываем позицию справа */
-    left: 0;     /* Позиционируем слева */
+    left: -5vw;     /* Позиционируем слева */
 }
 
 [dir="ltr"] .nav__item--has-dropdown > a::after {
@@ -5736,7 +5740,7 @@ html {
 /* --- Media Query Adjustments --- */
 @media only screen and (max-width: 1650px) {
     [dir="ltr"] .hero__swoosh-1 {
-        left: -2%;
+        left: -10vw;
         right: auto;
     }
 }
@@ -5753,4 +5757,14 @@ html {
     [dir="ltr"] .hero__main-wrapper {
         padding-left: 0; /* Убираем отступ на мобильных */
     }
+
+    [dir="ltr"] .hero__swoosh-mobile {
+        padding-inline-end: 12%;
+        padding-inline-start: 0;
+    }
+}
+
+[dir="ltr"] .footer__logos img {
+    height: 40px;
+    margin: 30px 0;
 }
